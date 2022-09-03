@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f50b559d-b807-4d39-8923-80305104cc31" name="Changes" comment="lol">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/make-a-lisp.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Reader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Repl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/exceptions/MalException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/exceptions/ParserException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/MalList.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/MalNumber.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/MalSymbol.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/MalType.java" afterDir="false" />
+    <list default="true" id="f50b559d-b807-4d39-8923-80305104cc31" name="Changes" comment="first steps :^)">
+      <change afterPath="$PROJECT_DIR$/src/builtin/Numeric.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/environment/MalEnvironment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/exceptions/MalExecutionException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/mal/Keywords.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/types/MalBool.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/types/MalCallable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/types/MalNil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/types/MalString.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mal/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mal/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Reader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mal/Reader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mal/Repl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/exceptions/MalException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/exceptions/ParserException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/exceptions/MalParserException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalNumber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalNumber.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalSymbol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalType.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +30,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -36,7 +39,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/Main.java" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/src/mal/Main.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -47,16 +50,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -66,6 +69,14 @@
       <option name="presentableId" value="Default" />
       <updated>1662029949196</updated>
     </task>
+    <task id="LOCAL-00001" summary="first steps :^)">
+      <created>1662066423005</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1662066423005</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -81,6 +92,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="lol" />
-    <option name="LAST_COMMIT_MESSAGE" value="lol" />
+    <MESSAGE value="first steps :^)" />
+    <option name="LAST_COMMIT_MESSAGE" value="first steps :^)" />
   </component>
 </project>

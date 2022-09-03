@@ -1,5 +1,8 @@
 package types;
 
+import environment.MalEnvironment;
+import exceptions.MalExecutionException;
+
 public class MalNumber implements MalType {
 
     private double value;
@@ -8,8 +11,19 @@ public class MalNumber implements MalType {
         this.value = value;
     }
 
+    public double value() {return  value;}
+
     public String toString() {
         return Double.toString(value);
     }
 
+    public static void assertIsNumber(MalType t) throws MalExecutionException {
+        if (!(t instanceof MalNumber))
+            throw new MalExecutionException("'" + t.toString() + "' can't be used as a number");
+    }
+
+    @Override
+    public MalType eval(MalEnvironment e) {
+        return this;
+    }
 }

@@ -1,3 +1,5 @@
+package mal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -12,17 +14,27 @@ public class Reader {
     private List<String> tokens;
     private int cursor;
 
-
     public Reader(String input) {
         cursor = 0;
-        Matcher m = MAL_TOKEN_PATTERN.matcher(input);
+        Matcher m = MAL_TOKEN_PATTERN.matcher(input.strip());
         tokens = new ArrayList<String>();
         while (m.find())
             tokens.add(m.group(2));
+
+        // remove empty tokens
+        tokens.remove("");
+
+        // remove comments
+        for (int i = 0; i < tokens.size(); i++) {
+            if (tokens.get(i).startsWith(";")) {
+                tokens.remove(i);
+                i--;
+            }
+        }
     }
 
     // TODO: read from files
-    // public Reader (File f) {}
+    // public mal.Reader (File f) {}
 
     public String next() {
         if (!hasNext())
@@ -45,10 +57,6 @@ public class Reader {
 
     public boolean hasNext() {
         return (cursor < tokens.size());
-    }
-
-    public int getCursor() {
-        return cursor;
     }
 
     public List<String> getTokens() {
