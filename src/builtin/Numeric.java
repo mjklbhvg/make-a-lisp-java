@@ -6,7 +6,7 @@ import types.MalNumber;
 
 public class Numeric {
     public static MalCallable add() {
-        return (args) -> {
+        return (args, env) -> {
             if (args.size() <= 1)
                 throw new MalExecutionException("+ needs more arguments");
 
@@ -20,7 +20,7 @@ public class Numeric {
     }
 
     public static MalCallable subtract() {
-        return (args) -> {
+        return (args, env) -> {
             if (args.size() <= 1)
                 throw new MalExecutionException("- needs more arguments");
 
@@ -40,7 +40,7 @@ public class Numeric {
     }
 
     public static MalCallable multiply() {
-        return (args) -> {
+        return (args, env) -> {
             if (args.size() <= 1)
                 throw new MalExecutionException("* needs more arguments");
 
@@ -54,7 +54,7 @@ public class Numeric {
     }
 
     public static MalCallable divide() {
-        return (args) -> {
+        return (args, env) -> {
             if (args.size() <= 1)
                 throw new MalExecutionException("/ needs more arguments");
 

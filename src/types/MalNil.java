@@ -1,7 +1,6 @@
 package types;
 
 import environment.MalEnvironment;
-import exceptions.MalExecutionException;
 import mal.Keywords;
 
 public class MalNil implements MalType {

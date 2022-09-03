@@ -1,7 +1,6 @@
 package types;
 
 import environment.MalEnvironment;
-import exceptions.MalExecutionException;
 import exceptions.MalParserException;
 
 public class MalString implements MalType {

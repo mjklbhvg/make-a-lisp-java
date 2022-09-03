@@ -17,7 +17,7 @@ public class Reader {
     public Reader(String input) {
         cursor = 0;
         Matcher m = MAL_TOKEN_PATTERN.matcher(input.strip());
-        tokens = new ArrayList<String>();
+        tokens = new ArrayList<>();
         while (m.find())
             tokens.add(m.group(2));
 

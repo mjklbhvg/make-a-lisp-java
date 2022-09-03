@@ -20,21 +20,22 @@ public class Parser {
     }
 
     private MalType readForm() throws MalParserException {
-         if (r.peekAt("(")) {
-             return readList();
-         }
+         if (r.peekAt("("))
+             return readContainer(")", new MalList());
+         if (r.peekAt("["))
+             return readContainer("]", new MalVector());
+         if (r.peekAt("{"))
+             return readContainer("}", new MalTable());
          return readAtom();
     }
 
-    private MalList readList() throws MalParserException {
-        MalList list = new MalList();
+    private MalContainer readContainer(String end, MalContainer container) throws MalParserException {
         while (r.hasNext()) {
-            if (r.peekAt(")")) {
-                return list;
-            }
-            list.add(readForm());
+            if (r.peekAt(end))
+                return container.checkComplete();
+            container.store(readForm());
         }
-        throw new MalParserException("unbalanced parenthesis");
+        throw new MalParserException("missing closing character '" + end + "'");
     }
 
     private MalType readAtom() throws MalParserException {
@@ -43,6 +44,7 @@ public class Parser {
         String tok = r.next();
 
         // MalNumber
+        //noinspection CatchMayIgnoreException
         try {
             return new MalNumber(Double.parseDouble(tok));
         } catch (NumberFormatException e){}
@@ -55,6 +57,12 @@ public class Parser {
             return new MalBool(true);
         if (tok.equals(Keywords.FALSE))
             return new MalBool(false);
+        // MalKeyword
+        if (tok.startsWith(":")) {
+            if (tok.length() < 3)
+                throw new MalParserException("zero length keyword");
+            return new MalKeyword(tok.substring(1));
+        }
         // MalString
         if (tok.startsWith("\"")) {
             if (!tok.endsWith("\""))
