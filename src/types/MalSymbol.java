@@ -14,11 +14,10 @@ public class MalSymbol implements MalType {
         return sym;
     }
 
+    public String value() {return sym;}
+
     @Override
     public MalType eval(MalEnvironment e) throws MalExecutionException {
-        if (e.containsKey(sym)) {
             return e.get(sym);
-        }
-        throw new MalExecutionException("variable '" + sym + "' not defined");
     }
 }

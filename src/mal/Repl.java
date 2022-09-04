@@ -11,12 +11,14 @@ public class Repl {
 
     private BufferedReader reader;
     private MalEnvironment replEnvironment;
+    private String prompt;
 
     public Repl() {
         reader = new BufferedReader(
                 new InputStreamReader(System.in)
         );
         replEnvironment = MalEnvironment.getBaseEnvironment();
+        prompt = System.getProperty("user.name") + "> ";
     }
 
     public void exit() {
@@ -28,7 +30,7 @@ public class Repl {
     }
 
     public boolean rep() {
-        System.out.print("user> ");
+        System.out.print(prompt);
         String line;
         try {
             line = reader.readLine();
@@ -53,7 +55,12 @@ public class Repl {
             return true;
         }
 
-        MalEnvironment backupEnvironment = (MalEnvironment) replEnvironment.clone();
+        MalEnvironment backupEnvironment;
+        try {
+            backupEnvironment = (MalEnvironment) replEnvironment.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
         try {
             System.out.println("=> " +
                     ast.eval(replEnvironment)
