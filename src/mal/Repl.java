@@ -61,9 +61,10 @@ public class Repl {
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
+        Evaluator evaluator = new Evaluator();
         try {
             System.out.println("=> " +
-                    ast.eval(replEnvironment)
+                    evaluator.evaluate(ast, replEnvironment)
                             .toString()
             );
         } catch (MalExecutionException e) {

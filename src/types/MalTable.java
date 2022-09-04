@@ -3,6 +3,7 @@ package types;
 import environment.MalEnvironment;
 import exceptions.MalExecutionException;
 import exceptions.MalParserException;
+import mal.Evaluator;
 
 import java.util.HashMap;
 
@@ -62,10 +63,10 @@ public class MalTable extends HashMap<MalType, MalType> implements MalType, MalC
     }
 
     @Override
-    public MalType eval(MalEnvironment e) throws MalExecutionException {
+    public MalType eval(MalEnvironment e, Evaluator evaluator) throws MalExecutionException {
         MalTable evaluatedTable = new MalTable();
         for (MalType key : keySet())
-            evaluatedTable.put(key, get(key).eval(e));
+            evaluatedTable.put(key, get(key).eval(e, evaluator));
         return evaluatedTable;
     }
 }

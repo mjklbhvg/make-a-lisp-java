@@ -2,6 +2,7 @@ package types;
 
 import environment.MalEnvironment;
 import exceptions.MalExecutionException;
+import mal.Evaluator;
 
 public class MalSymbol implements MalType {
      private String sym;
@@ -17,8 +18,8 @@ public class MalSymbol implements MalType {
     public String value() {return sym;}
 
     @Override
-    public MalType eval(MalEnvironment e) throws MalExecutionException {
-            return e.get(sym).eval(e);
+    public MalType eval(MalEnvironment e, Evaluator evaluator) throws MalExecutionException {
+            return e.get(sym).eval(e, evaluator);
     }
 
     @Override

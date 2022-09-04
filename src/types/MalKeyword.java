@@ -1,6 +1,7 @@
 package types;
 
 import environment.MalEnvironment;
+import mal.Evaluator;
 
 public class MalKeyword implements MalType {
 
@@ -15,7 +16,7 @@ public class MalKeyword implements MalType {
     }
 
     @Override
-    public MalType eval(MalEnvironment e) {
+    public MalType eval(MalEnvironment e, Evaluator evaluator) {
         return this;
     }
 

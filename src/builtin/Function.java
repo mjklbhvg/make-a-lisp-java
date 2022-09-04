@@ -2,6 +2,7 @@ package builtin;
 
 import environment.MalEnvironment;
 import exceptions.MalExecutionException;
+import mal.Evaluator;
 import types.*;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ public class Function {
     public static MalSpecial lambda() {
         return new MalSpecial() {
             @Override
-            protected MalType execute(MalList args, MalEnvironment env) throws MalExecutionException {
+            protected MalType execute(MalList args, MalEnvironment env, Evaluator evaluator) throws MalExecutionException {
                 // TODO: variadic?
                 if (args.size() != 3)
                     throw new MalExecutionException("a lambda expects 2 arguments");
