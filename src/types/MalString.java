@@ -19,10 +19,16 @@ public class MalString implements MalType {
         return this;
     }
 
+    public boolean equals(Object o) {
+        if (o instanceof MalString str)
+            return str.value.equals(value);
+        return false;
+    }
+
     public static String escape(String s, boolean visualizeEscape) {
         String pre = "", post = "";
         if (visualizeEscape) {
-            pre = "\033[7m";
+            pre = "\033[31m";
             post = "\033[m";
         }
         return s.replace("\\", pre + "\\\\" + post)
@@ -61,5 +67,10 @@ public class MalString implements MalType {
 
     public String toString() {
         return "„" + escape(value, true) + "“";
+    }
+
+    @Override
+    public String rawString() {
+        return  value;
     }
 }

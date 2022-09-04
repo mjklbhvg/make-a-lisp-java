@@ -1,7 +1,6 @@
 package environment;
 
-import builtin.Env;
-import builtin.Numeric;
+import builtin.*;
 import exceptions.MalExecutionException;
 import types.MalType;
 
@@ -9,7 +8,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class MalEnvironment implements Cloneable {
-
     private MalEnvironment outerEnv;
     private HashMap<String, MalType> store;
     private static HashSet<String> protectedWords = new HashSet<>();
@@ -19,7 +17,7 @@ public class MalEnvironment implements Cloneable {
         store = new HashMap<>();
     }
 
-    public void put(String key, MalType value, boolean protect) {
+    protected void put(String key, MalType value, boolean protect) {
         store.put(key, value);
         if (protect)
             protectedWords.add(key);
@@ -29,7 +27,8 @@ public class MalEnvironment implements Cloneable {
     public void set(String key, MalType value) throws MalExecutionException {
         if (protectedWords.contains(key))
             throw new MalExecutionException("attempt to shadow or overwrite special builtin " + key);
-        store.put(key, value);
+        put(key, value, false);
+      //  System.out.println("Set "+key+" to "+value);
     }
 
     public MalType get(String key) throws MalExecutionException {
@@ -50,8 +49,23 @@ public class MalEnvironment implements Cloneable {
         base.put("-", Numeric.subtract(), false);
         base.put("*", Numeric.multiply(), false);
         base.put("/", Numeric.divide(), false);
+        base.put("=", Conditional.equals(), false);
+        base.put("<", Conditional.less(), false);
+        base.put("<=", Conditional.lessEq(), false);
+        base.put(">", Conditional.greater(), false);
+        base.put(">=", Conditional.greaterEq(), false);
+        base.put("prn", Util.print(), false);
+        base.put("println", Util.printRaw(), false);
+        base.put("list", Util.list(), false);
+        base.put("list?", Util.isList(), false);
+        base.put("empty?", Util.isEmpty(), false);
+        base.put("count", Util.count(), false);
+
         base.put("let*", Env.addEnvironment(), true);
         base.put("def!", Env.modifyEnvironment(), true);
+        base.put("if", Conditional.malIF(), true);
+        base.put("do", Conditional.malDO(), true);
+        base.put("fn*", Function.lambda(), true);
         return base;
     }
 }

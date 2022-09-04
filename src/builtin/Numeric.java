@@ -1,75 +1,90 @@
 package builtin;
 
+import environment.MalEnvironment;
 import exceptions.MalExecutionException;
 import types.MalCallable;
+import types.MalList;
 import types.MalNumber;
+import types.MalType;
 
 public class Numeric {
     public static MalCallable add() {
-        return (args) -> {
-            if (args.size() <= 1)
-                throw new MalExecutionException("+ needs more arguments");
+        return new MalCallable() {
+            @Override
+            public MalType execute(MalList args, MalEnvironment env) throws MalExecutionException {
+                if (args.size() <= 1)
+                    throw new MalExecutionException("add needs more arguments");
 
-            double result = 0;
-            for (int i = 1; i < args.size(); i++) {
-                MalNumber.assertIsNumber(args.get(i));
-                result += ((MalNumber) args.get(i)).value();
+                double result = 0;
+                for (int i = 1; i < args.size(); i++) {
+                    MalNumber.assertIsNumber(args.get(i));
+                    result += ((MalNumber) args.get(i)).value();
+                }
+                return new MalNumber(result);
             }
-            return new MalNumber(result);
         };
     }
 
     public static MalCallable subtract() {
-        return (args) -> {
-            if (args.size() <= 1)
-                throw new MalExecutionException("- needs more arguments");
+        return new MalCallable() {
+            @Override
+            protected MalType execute(MalList args, MalEnvironment env) throws MalExecutionException {
+                if (args.size() <= 1)
+                    throw new MalExecutionException("subtract needs more arguments");
 
-            MalNumber.assertIsNumber(args.get(1));
-            double result = ((MalNumber) args.get(1)).value();
+                MalNumber.assertIsNumber(args.get(1));
+                double result = ((MalNumber) args.get(1)).value();
 
-            // (- 3) should evaluate to -3
-            if (args.size() == 2)
-                return new MalNumber(-result);
+                // (- 3) should evaluate to -3
+                if (args.size() == 2)
+                    return new MalNumber(-result);
 
-            for (int i = 2; i < args.size(); i++) {
-                MalNumber.assertIsNumber(args.get(i));
-                result -= ((MalNumber) args.get(i)).value();
+                for (int i = 2; i < args.size(); i++) {
+                    MalNumber.assertIsNumber(args.get(i));
+                    result -= ((MalNumber) args.get(i)).value();
+                }
+                return new MalNumber(result);
             }
-            return new MalNumber(result);
         };
     }
 
     public static MalCallable multiply() {
-        return (args) -> {
-            if (args.size() <= 1)
-                throw new MalExecutionException("* needs more arguments");
+        return new MalCallable() {
+            @Override
+            protected MalType execute(MalList args, MalEnvironment env) throws MalExecutionException {
+                if (args.size() <= 1)
+                    throw new MalExecutionException("multiply needs more arguments");
 
-            double result = 1;
-            for (int i = 1; i < args.size(); i++) {
-                MalNumber.assertIsNumber(args.get(i));
-                result *= ((MalNumber) args.get(i)).value();
+                double result = 1;
+                for (int i = 1; i < args.size(); i++) {
+                    MalNumber.assertIsNumber(args.get(i));
+                    result *= ((MalNumber) args.get(i)).value();
+                }
+                return new MalNumber(result);
             }
-            return new MalNumber(result);
         };
     }
 
     public static MalCallable divide() {
-        return (args) -> {
-            if (args.size() <= 1)
-                throw new MalExecutionException("/ needs more arguments");
+        return new MalCallable() {
+            @Override
+            protected MalType execute(MalList args, MalEnvironment env) throws MalExecutionException {
+                if (args.size() <= 1)
+                    throw new MalExecutionException("divide needs more arguments");
 
-            MalNumber.assertIsNumber(args.get(1));
-            double result = ((MalNumber) args.get(1)).value();
+                MalNumber.assertIsNumber(args.get(1));
+                double result = ((MalNumber) args.get(1)).value();
 
-            // (/ 2) should evaluate to 0.5
-            if (args.size() == 2)
-                return new MalNumber(1 / result);
+                // (/ 2) should evaluate to 0.5
+                if (args.size() == 2)
+                    return new MalNumber(1 / result);
 
-            for (int i = 2; i < args.size(); i++) {
-                MalNumber.assertIsNumber(args.get(i));
-                result /= ((MalNumber) args.get(i)).value();
+                for (int i = 2; i < args.size(); i++) {
+                    MalNumber.assertIsNumber(args.get(i));
+                    result /= ((MalNumber) args.get(i)).value();
+                }
+                return new MalNumber(result);
             }
-            return new MalNumber(result);
         };
     }
 }

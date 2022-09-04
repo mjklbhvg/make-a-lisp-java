@@ -13,6 +13,12 @@ public class MalNumber implements MalType {
 
     public double value() {return  value;}
 
+    public boolean equals(Object o) {
+        if (o instanceof MalNumber num)
+            return value == num.value;
+        return false;
+    }
+
     public String toString() {
         return Double.toString(value);
     }
@@ -25,5 +31,10 @@ public class MalNumber implements MalType {
     @Override
     public MalType eval(MalEnvironment e) {
         return this;
+    }
+
+    @Override
+    public String rawString() {
+        return toString();
     }
 }

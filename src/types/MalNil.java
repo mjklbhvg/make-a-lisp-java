@@ -10,7 +10,16 @@ public class MalNil implements MalType {
         return this;
     }
 
+    @Override
+    public String rawString() {
+        return toString();
+    }
+
     public String toString() {
         return Keywords.NIL;
+    }
+
+    public boolean equals(Object o) {
+        return o instanceof MalNil;
     }
 }

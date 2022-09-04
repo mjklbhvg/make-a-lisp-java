@@ -18,6 +18,11 @@ public class MalSymbol implements MalType {
 
     @Override
     public MalType eval(MalEnvironment e) throws MalExecutionException {
-            return e.get(sym);
+            return e.get(sym).eval(e);
+    }
+
+    @Override
+    public String rawString() {
+        return toString();
     }
 }

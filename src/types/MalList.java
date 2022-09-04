@@ -24,6 +24,18 @@ public class MalList extends MalVector implements MalType {
         return str.toString();
     }
 
+    public String rawString() {
+        StringBuilder str = new StringBuilder();
+        if (!mainAST) str.append('(');
+        for (int i = 0; i < size(); i++) {
+            str.append(get(i).rawString());
+            if (i < size() - 1)
+                str.append(" ");
+        }
+        if (!mainAST) str.append(')');
+        return str.toString();
+    }
+
     @Override
     public MalType eval(MalEnvironment e) throws MalExecutionException {
         if (size() == 0)
@@ -34,18 +46,23 @@ public class MalList extends MalVector implements MalType {
 
         // This is needed to e.g. make a 'let*' symbol evaluate itself
         // to the let* special
-        set(0, get(0).eval(e));
-        if (!mainAST && get(0) instanceof MalSpecial spec) {
-            return spec.execute(this, e);
+        MalList evaluatedList = new MalList();
+        evaluatedList.setMainAST(mainAST);
+        evaluatedList.add(get(0).eval(e));
+        for (int i = 1; i < size(); i++)
+            evaluatedList.add(get(i));
+        if (!mainAST && evaluatedList.get(0) instanceof MalSpecial spec) {
+            return spec.execute(evaluatedList, e);
         }
 
         for (int i = 1; i < size(); i++)
-            set(i, get(i).eval(e));
+            evaluatedList.set(i, get(i).eval(e));
 
-        if (!mainAST && get(0) instanceof MalCallable func) {
-            return func.execute(this);
+        if (!mainAST && evaluatedList.get(0) instanceof MalCallable func) {
+          //  System.out.println("function call!!");
+            return func.execute(evaluatedList, e);
         }
-        return this;
+        return evaluatedList;
     }
 
     @Override

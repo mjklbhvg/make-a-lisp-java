@@ -1,7 +1,6 @@
 package types;
 
 import environment.MalEnvironment;
-import exceptions.MalExecutionException;
 
 public class MalKeyword implements MalType {
 
@@ -20,7 +19,20 @@ public class MalKeyword implements MalType {
         return this;
     }
 
+    @Override
+    public String rawString() {
+        return toString();
+    }
+
+    public boolean equals(Object o) {
+        if (o instanceof MalKeyword malkeyword)
+            return malkeyword.value().equals(word);
+        return false;
+    }
+
     public String toString() {
         return ":" + word;
     }
+
+
 }

@@ -1,18 +1,15 @@
 package types;
 
 import environment.MalEnvironment;
-import exceptions.MalExecutionException;
 
-public interface MalSpecial extends MalCallable {
-    MalType execute(MalList args, MalEnvironment env) throws MalExecutionException;
-
+public abstract class MalSpecial extends MalCallable {
     @Override
-    default MalType execute(MalList args) throws MalExecutionException {
-        return execute(args, MalEnvironment.getBaseEnvironment());
-    }
-
-    @Override
-    default MalType eval(MalEnvironment e) {
+    public MalType eval(MalEnvironment e) {
         return this;
     }
+
+    public String toString() {
+        return "#<special>";
+    }
+
 }

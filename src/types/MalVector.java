@@ -9,6 +9,13 @@ public class MalVector extends ArrayList<MalType> implements MalType, MalContain
 
     public MalVector() {super();}
 
+    public boolean equals(Object o) {
+        if (o instanceof MalVector vec) {
+            return super.equals(vec);
+        }
+        return false;
+    }
+
     public String toString() {
         StringBuilder str = new StringBuilder();
         str.append('[');
@@ -23,9 +30,15 @@ public class MalVector extends ArrayList<MalType> implements MalType, MalContain
 
     @Override
     public MalType eval(MalEnvironment e) throws MalExecutionException {
+        MalVector evaluatedVector = new MalVector();
         for (int i = 0; i < size(); i++)
-            set(i, get(i).eval(e));
-        return this;
+            evaluatedVector.add(get(i).eval(e));
+        return evaluatedVector;
+    }
+
+    @Override
+    public String rawString() {
+        return toString();
     }
 
     @Override

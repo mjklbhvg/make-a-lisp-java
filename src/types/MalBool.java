@@ -11,18 +11,26 @@ public class MalBool implements MalType {
         this.value = value;
     }
 
-    public boolean value() {
-        return value;
-    }
-
     @Override
     public MalType eval(MalEnvironment e) {
         return this;
+    }
+
+    public boolean value() {return value;}
+
+    public boolean equals(Object o) {
+        if (o instanceof MalBool malbool)
+            return malbool.value == value;
+        return false;
     }
 
     public String toString() {
         if (value)
             return Keywords.TRUE;
         return Keywords.FALSE;
+    }
+
+    public String rawString() {
+        return toString();
     }
 }
