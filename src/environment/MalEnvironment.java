@@ -2,6 +2,10 @@ package environment;
 
 import builtin.*;
 import exceptions.MalExecutionException;
+import exceptions.MalParserException;
+import mal.Evaluator;
+import mal.Parser;
+import mal.Reader;
 import types.MalType;
 
 import java.util.HashMap;
@@ -56,6 +60,8 @@ public class MalEnvironment implements Cloneable {
         base.put(">=", Conditional.greaterEq(), false);
         base.put("prn", Util.print(), false);
         base.put("println", Util.printRaw(), false);
+        base.put("pr-str", Util.string(), false);
+        base.put("str", Util.stringRaw(), false);
         base.put("list", Util.list(), false);
         base.put("list?", Util.isList(), false);
         base.put("empty?", Util.isEmpty(), false);
@@ -66,6 +72,17 @@ public class MalEnvironment implements Cloneable {
         base.put("if", Conditional.malIF(), true);
         base.put("do", Conditional.malDO(), true);
         base.put("fn*", Function.lambda(), true);
+
+        Evaluator initEval = new Evaluator(base);
+        String initCode = "(def! not (fn* (a) (if a false true)))";
+
+            try {
+                MalType ast = new Parser(new Reader(initCode)).getAST();
+                initEval.nextTask(ast);
+                initEval.evaluate();
+            } catch (MalParserException | MalExecutionException e) {
+                throw new RuntimeException(e);
+            }
         return base;
     }
 }

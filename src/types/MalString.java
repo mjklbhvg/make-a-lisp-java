@@ -1,6 +1,5 @@
 package types;
 
-import environment.MalEnvironment;
 import exceptions.MalParserException;
 import mal.Evaluator;
 
@@ -16,7 +15,7 @@ public class MalString implements MalType {
         return value;
     }
     @Override
-    public MalType eval(MalEnvironment e, Evaluator evaluator) {
+    public MalType eval(Evaluator evaluator) {
         return this;
     }
 

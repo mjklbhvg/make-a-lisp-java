@@ -1,6 +1,5 @@
 package builtin;
 
-import environment.MalEnvironment;
 import exceptions.MalExecutionException;
 import mal.Evaluator;
 import types.*;
@@ -11,8 +10,7 @@ public class Function {
     public static MalSpecial lambda() {
         return new MalSpecial() {
             @Override
-            protected MalType execute(MalList args, MalEnvironment env, Evaluator evaluator) throws MalExecutionException {
-                // TODO: variadic?
+            protected MalType execute(MalList args, Evaluator evaluator) throws MalExecutionException {
                 if (args.size() != 3)
                     throw new MalExecutionException("a lambda expects 2 arguments");
 
@@ -26,7 +24,7 @@ public class Function {
                         throw new MalExecutionException("expected variable name, not " + t);
                     arguments.add(symbol.value());
                 }
-                return new MalLambda(arguments, args.get(2), env);
+                return new MalLambda(arguments, args.get(2), evaluator.getEnvironment());
             }
         };
     }

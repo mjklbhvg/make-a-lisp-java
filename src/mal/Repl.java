@@ -10,14 +10,14 @@ import java.io.*;
 public class Repl {
 
     private BufferedReader reader;
-    private MalEnvironment replEnvironment;
+    private Evaluator replEval;
     private String prompt;
 
     public Repl() {
         reader = new BufferedReader(
                 new InputStreamReader(System.in)
         );
-        replEnvironment = MalEnvironment.getBaseEnvironment();
+        replEval = new Evaluator(MalEnvironment.getBaseEnvironment());
         prompt = System.getProperty("user.name") + "> ";
     }
 
@@ -51,25 +51,25 @@ public class Repl {
         try {
             ast = new Parser(tokenizer).getAST();
         } catch (MalParserException e) {
-            System.out.println(e);
+            System.out.println("Parser Error: " + e);
             return true;
         }
 
         MalEnvironment backupEnvironment;
         try {
-            backupEnvironment = (MalEnvironment) replEnvironment.clone();
+            backupEnvironment = (MalEnvironment) replEval.getEnvironment().clone();
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
-        Evaluator evaluator = new Evaluator();
+        replEval.nextTask(ast);
         try {
             System.out.println("=> " +
-                    evaluator.evaluate(ast, replEnvironment)
+                    replEval.evaluate()
                             .toString()
             );
         } catch (MalExecutionException e) {
-            System.out.println(e);
-            replEnvironment = backupEnvironment;
+            System.out.println("Evaluator Error: " + e);
+            replEval.setEnvironment(backupEnvironment);
             System.out.println("Restored environment (⌐■_■)");
         }
         return true;

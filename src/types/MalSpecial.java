@@ -1,11 +1,10 @@
 package types;
 
-import environment.MalEnvironment;
 import mal.Evaluator;
 
 public abstract class MalSpecial extends MalCallable {
     @Override
-    public MalType eval(MalEnvironment e, Evaluator evaluator) {
+    public MalType eval(Evaluator evaluator) {
         return this;
     }
 

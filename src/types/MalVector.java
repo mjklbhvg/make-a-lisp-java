@@ -1,6 +1,5 @@
 package types;
 
-import environment.MalEnvironment;
 import exceptions.MalExecutionException;
 import mal.Evaluator;
 
@@ -30,10 +29,10 @@ public class MalVector extends ArrayList<MalType> implements MalType, MalContain
     }
 
     @Override
-    public MalType eval(MalEnvironment e, Evaluator evaluator) throws MalExecutionException {
+    public MalType eval(Evaluator evaluator) throws MalExecutionException {
         MalVector evaluatedVector = new MalVector();
         for (int i = 0; i < size(); i++)
-            evaluatedVector.add(get(i).eval(e, evaluator));
+            evaluatedVector.add(get(i).eval(evaluator));
         return evaluatedVector;
     }
 

@@ -59,7 +59,7 @@ public class Parser {
             return new MalBool(false);
         // MalKeyword
         if (tok.startsWith(":")) {
-            if (tok.length() < 3)
+            if (tok.length() < 2)
                 throw new MalParserException("zero length keyword");
             return new MalKeyword(tok.substring(1));
         }

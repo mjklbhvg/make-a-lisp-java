@@ -1,6 +1,5 @@
 package types;
 
-import environment.MalEnvironment;
 import exceptions.MalExecutionException;
 import mal.Evaluator;
 
@@ -38,7 +37,7 @@ public class MalList extends MalVector implements MalType {
     }
 
     @Override
-    public MalType eval(MalEnvironment e, Evaluator evaluator) throws MalExecutionException {
+    public MalType eval(Evaluator evaluator) throws MalExecutionException {
         if (size() == 0)
             return this;
 
@@ -49,20 +48,18 @@ public class MalList extends MalVector implements MalType {
         // to the let* special
         MalList evaluatedList = new MalList();
         evaluatedList.setMainAST(mainAST);
-        evaluatedList.add(get(0).eval(e, evaluator));
+        evaluatedList.add(get(0).eval(evaluator));
         for (int i = 1; i < size(); i++)
             evaluatedList.add(get(i));
-        if (!mainAST && evaluatedList.get(0) instanceof MalSpecial spec) {
-            return spec.execute(evaluatedList, e, evaluator);
-        }
+
+        if (!mainAST && evaluatedList.get(0) instanceof MalSpecial spec)
+            return spec.execute(evaluatedList, evaluator);
 
         for (int i = 1; i < size(); i++)
-            evaluatedList.set(i, get(i).eval(e, evaluator));
+            evaluatedList.set(i, get(i).eval(evaluator));
 
-        if (!mainAST && evaluatedList.get(0) instanceof MalCallable func) {
-          //  System.out.println("function call!!");
-            return func.execute(evaluatedList, e, evaluator);
-        }
+        if (!mainAST && evaluatedList.get(0) instanceof MalCallable func)
+            return func.execute(evaluatedList, evaluator);
         return evaluatedList;
     }
 
