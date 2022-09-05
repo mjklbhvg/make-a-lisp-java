@@ -58,9 +58,13 @@ public class MalList extends MalVector implements MalType {
         for (int i = 1; i < size(); i++)
             evaluatedList.set(i, get(i).eval(evaluator));
 
-        if (!mainAST && evaluatedList.get(0) instanceof MalCallable func)
+        if (mainAST)
+            return evaluatedList;
+
+        if (evaluatedList.get(0) instanceof MalCallable func)
             return func.execute(evaluatedList, evaluator);
-        return evaluatedList;
+        else
+            throw new MalExecutionException(evaluatedList.get(0) + " can't be called as a function");
     }
 
     @Override

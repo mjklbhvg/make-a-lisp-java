@@ -49,5 +49,15 @@ public class Evaluator {
         return result;
     }
 
+    public void evaluateBackground() {
+        new Thread(() -> {
+                try {
+                    evaluate();
+                } catch (MalExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+        }).start();
+    }
+
 
 }

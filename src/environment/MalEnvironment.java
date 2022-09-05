@@ -73,7 +73,13 @@ public class MalEnvironment implements Cloneable {
         base.put("do", Conditional.malDO(), true);
         base.put("fn*", Function.lambda(), true);
 
+        base.put("chan", Channel.createChannel(), true);
+        base.put("<-", Channel.receive(), true);
+        base.put("->", Channel.send(), true);
+        base.put("run", Channel.run(), true);
+
         Evaluator initEval = new Evaluator(base);
+        // TODO: load this from a file
         String initCode = "(def! not (fn* (a) (if a false true)))";
 
             try {
