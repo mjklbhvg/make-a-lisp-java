@@ -28,7 +28,7 @@ public class Numeric {
     public static MalCallable subtract() {
         return new MalCallable() {
             @Override
-            protected MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
+            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
                 if (args.size() <= 1)
                     throw new MalExecutionException("subtract needs more arguments");
 
@@ -51,7 +51,7 @@ public class Numeric {
     public static MalCallable multiply() {
         return new MalCallable() {
             @Override
-            protected MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
+            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
                 if (args.size() <= 1)
                     throw new MalExecutionException("multiply needs more arguments");
 
@@ -68,7 +68,7 @@ public class Numeric {
     public static MalCallable divide() {
         return new MalCallable() {
             @Override
-            protected MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
+            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
                 if (args.size() <= 1)
                     throw new MalExecutionException("divide needs more arguments");
 

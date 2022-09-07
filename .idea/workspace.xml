@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="mal" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="f50b559d-b807-4d39-8923-80305104cc31" name="Changes" comment="channels and run, probably bad lol">
-      <change afterPath="$PROJECT_DIR$/src/environment/init.mal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/mal/TCO.java" afterDir="false" />
+    <list default="true" id="f50b559d-b807-4d39-8923-80305104cc31" name="Changes" comment="fixed tail call optimisation (I hope)">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/types/MalAtom.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/builtin/Channel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Channel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/builtin/Conditional.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Conditional.java" afterDir="false" />
@@ -12,24 +17,11 @@
       <change beforePath="$PROJECT_DIR$/src/builtin/Numeric.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Numeric.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/builtin/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Util.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/environment/MalEnvironment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/environment/MalEnvironment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mal/Evaluator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/environment/init.mal" beforeDir="false" afterPath="$PROJECT_DIR$/src/environment/init.mal" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/mal/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mal/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mal/Repl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mal/Repl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/MalBool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalBool.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/MalCallable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalCallable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/MalChannel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalChannel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/MalContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalContainer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/MalKeyword.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalKeyword.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/MalLambda.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalLambda.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/MalList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/MalNil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalNil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/MalNumber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalNumber.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/MalSpecial.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalSpecial.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/MalString.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalString.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/MalSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalSymbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/MalTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/MalType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/MalVector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalVector.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,9 +59,9 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;
   }
@@ -153,7 +145,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662400750137</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="fixed tail call optimisation (I hope)">
+      <created>1662509621314</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1662509621314</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -180,7 +179,8 @@
     <MESSAGE value="refactor, did not test much lol" />
     <MESSAGE value="channels and run, probably bad" />
     <MESSAGE value="channels and run, probably bad lol" />
-    <option name="LAST_COMMIT_MESSAGE" value="channels and run, probably bad lol" />
+    <MESSAGE value="fixed tail call optimisation (I hope)" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed tail call optimisation (I hope)" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

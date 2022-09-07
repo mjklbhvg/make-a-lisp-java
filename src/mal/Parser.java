@@ -49,6 +49,14 @@ public class Parser {
             return new MalNumber(Double.parseDouble(tok));
         } catch (NumberFormatException e){}
 
+        // Dereference atoms with '@'
+        if (tok.equals("@")) {
+            MalList derefForm = new MalList();
+            derefForm.add(new MalSymbol("deref"));
+            derefForm.add(readForm());
+            return derefForm;
+        }
+
         // MalNil
         if (tok.equals(Keywords.NIL))
             return new MalNil();

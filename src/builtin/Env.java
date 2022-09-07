@@ -32,7 +32,7 @@ public class Env {
     public static MalSpecial modifyEnvironment() {
         return new MalSpecial() {
             @Override
-            protected MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
+            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
                 if (!(args.size() == 3))
                     throw new MalExecutionException("def! takes 2 arguments");
 

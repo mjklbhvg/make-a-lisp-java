@@ -20,7 +20,10 @@ public class MalNumber extends MalType {
     }
 
     public String toString() {
-        return Double.toString(value);
+        String str = Double.toString(value);
+        if (str.endsWith(".0")) // FIXME: LOL
+            return str.substring(0, str.length() - 2);
+        return str;
     }
 
     public static void assertIsNumber(MalType t) throws MalExecutionException {

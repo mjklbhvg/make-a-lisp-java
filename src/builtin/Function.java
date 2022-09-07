@@ -11,7 +11,7 @@ public class Function {
     public static MalSpecial lambda() {
         return new MalSpecial() {
             @Override
-            protected MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
+            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
                 if (args.size() != 3)
                     throw new MalExecutionException("a lambda expects 2 arguments");
 
@@ -25,7 +25,7 @@ public class Function {
                         throw new MalExecutionException("expected variable name, not " + symbolList.get(i));
                     arguments.add(symbol.value());
                 }
-                return new MalLambda(arguments, args.get(2), environment);
+                return new MalLambda(arguments, args.get(2), new MalEnvironment(environment));
             }
         };
     }
@@ -33,10 +33,10 @@ public class Function {
     public static MalCallable eval() {
         return new MalCallable() {
             @Override
-            protected MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException, TCO {
+            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException, TCO {
                 if (args.size() != 2)
                     throw new MalExecutionException("eval expects 1 argument");
-                throw new TCO(args.get(1), environment);
+                throw new TCO(args.get(1), environment.getRoot());
             }
         };
     }

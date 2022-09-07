@@ -18,7 +18,7 @@ public class MalLambda extends MalCallable {
         this.closureEnv = closureEnv;
     }
     @Override
-    protected MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException, TCO {
+    public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException, TCO {
             //MalEnvironment newEnv = new MalEnvironment(closureEnv);
 
             // TODO: variadic args

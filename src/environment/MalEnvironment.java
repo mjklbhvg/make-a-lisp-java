@@ -23,6 +23,12 @@ public class MalEnvironment implements Cloneable {
         store = new HashMap<>();
     }
 
+    public MalEnvironment getRoot() {
+        if (outerEnv == null)
+            return this;
+        return outerEnv.getRoot();
+    }
+
     protected void put(String key, MalType value, boolean protect) {
         store.put(key, value);
         if (protect)
@@ -70,6 +76,11 @@ public class MalEnvironment implements Cloneable {
         base.put("count", Util.count(), false);
         base.put("read-string", Util.readString(), false);
         base.put("slurp", Util.slurp(), false);
+        base.put("atom?", Util.isAtom(), false);
+        base.put("atom", Util.atom(), false);
+        base.put("deref", Util.deref(), false);
+        base.put("reset!", Util.resetAtom(), false);
+        base.put("swap!", Util.swap(), false);
 
         base.put("let*", Env.addEnvironment(), true);
         base.put("def!", Env.modifyEnvironment(), true);
