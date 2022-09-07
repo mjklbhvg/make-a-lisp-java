@@ -1,13 +1,37 @@
 package types;
 
+import environment.MalEnvironment;
 import exceptions.MalExecutionException;
-import mal.Evaluator;
+import mal.TCO;
 
 import java.util.ArrayList;
 
-public class MalVector extends ArrayList<MalType> implements MalType, MalContainer {
+public class MalVector extends MalType implements MalContainer {
 
-    public MalVector() {super();}
+    private ArrayList<MalType> list;
+    public MalVector() {
+        list = new ArrayList<>();
+    }
+
+    public int size() {
+        return list.size();
+    }
+
+    public void set(int i, MalType t) {
+        list.set(i, t);
+    }
+
+    public boolean isEmpty() {
+        return list.isEmpty();
+    }
+
+    public void add(MalType t) {
+        list.add(t);
+    }
+
+    public MalType get(int i) {
+        return list.get(i);
+    }
 
     public boolean equals(Object o) {
         if (o instanceof MalVector vec) {
@@ -29,16 +53,11 @@ public class MalVector extends ArrayList<MalType> implements MalType, MalContain
     }
 
     @Override
-    public MalType eval(Evaluator evaluator) throws MalExecutionException {
+    public MalType evalType(MalEnvironment environment) throws MalExecutionException, TCO {
         MalVector evaluatedVector = new MalVector();
         for (int i = 0; i < size(); i++)
-            evaluatedVector.add(get(i).eval(evaluator));
+            evaluatedVector.add(get(i).eval(environment));
         return evaluatedVector;
-    }
-
-    @Override
-    public String rawString() {
-        return toString();
     }
 
     @Override
@@ -47,7 +66,7 @@ public class MalVector extends ArrayList<MalType> implements MalType, MalContain
     }
 
     @Override
-    public MalContainer checkComplete() {
+    public MalType checkComplete() {
         return this;
     }
 }

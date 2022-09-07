@@ -2,7 +2,7 @@ package types;
 
 import exceptions.MalParserException;
 
-public interface MalContainer extends MalType {
+public interface MalContainer {
      void store(MalType data);
-     MalContainer checkComplete() throws MalParserException;
+     MalType checkComplete() throws MalParserException;
 }

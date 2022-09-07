@@ -1,9 +1,8 @@
 package types;
 
-import mal.Evaluator;
+import environment.MalEnvironment;
 
-public class MalKeyword implements MalType {
-
+public class MalKeyword extends MalType {
     private String word;
 
     public MalKeyword(String word) {
@@ -15,13 +14,8 @@ public class MalKeyword implements MalType {
     }
 
     @Override
-    public MalType eval(Evaluator evaluator) {
+    public MalType evalType(MalEnvironment environment) {
         return this;
-    }
-
-    @Override
-    public String rawString() {
-        return toString();
     }
 
     public boolean equals(Object o) {
@@ -33,6 +27,4 @@ public class MalKeyword implements MalType {
     public String toString() {
         return ":" + word;
     }
-
-
 }

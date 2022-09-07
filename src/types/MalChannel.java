@@ -1,11 +1,11 @@
 package types;
 
+import environment.MalEnvironment;
 import exceptions.MalExecutionException;
-import mal.Evaluator;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class MalChannel implements MalType {
+public class MalChannel extends MalType {
 
     private ArrayBlockingQueue<MalType> fifo;
 
@@ -13,7 +13,7 @@ public class MalChannel implements MalType {
         fifo = new ArrayBlockingQueue<>(1024);
     }
     @Override
-    public MalType eval(Evaluator evaluator) throws MalExecutionException {
+    public MalType evalType(MalEnvironment environment) throws MalExecutionException {
         return this;
     }
 
@@ -33,11 +33,6 @@ public class MalChannel implements MalType {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public String rawString() {
-        return toString();
     }
 
     public String toString() {

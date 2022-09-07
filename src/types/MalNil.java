@@ -1,18 +1,13 @@
 package types;
 
-import mal.Evaluator;
+import environment.MalEnvironment;
 import mal.Keywords;
 
-public class MalNil implements MalType {
+public class MalNil extends MalType {
 
     @Override
-    public MalType eval(Evaluator evaluator) {
+    public MalType evalType(MalEnvironment environment) {
         return this;
-    }
-
-    @Override
-    public String rawString() {
-        return toString();
     }
 
     public String toString() {

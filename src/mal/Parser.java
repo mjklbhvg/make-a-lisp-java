@@ -29,7 +29,7 @@ public class Parser {
          return readAtom();
     }
 
-    private MalContainer readContainer(String end, MalContainer container) throws MalParserException {
+    private MalType readContainer(String end, MalContainer container) throws MalParserException {
         while (r.hasNext()) {
             if (r.peekAt(end))
                 return container.checkComplete();

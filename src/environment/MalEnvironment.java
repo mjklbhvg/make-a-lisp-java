@@ -3,11 +3,13 @@ package environment;
 import builtin.*;
 import exceptions.MalExecutionException;
 import exceptions.MalParserException;
-import mal.Evaluator;
 import mal.Parser;
 import mal.Reader;
 import types.MalType;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -66,26 +68,33 @@ public class MalEnvironment implements Cloneable {
         base.put("list?", Util.isList(), false);
         base.put("empty?", Util.isEmpty(), false);
         base.put("count", Util.count(), false);
+        base.put("read-string", Util.readString(), false);
+        base.put("slurp", Util.slurp(), false);
 
         base.put("let*", Env.addEnvironment(), true);
         base.put("def!", Env.modifyEnvironment(), true);
         base.put("if", Conditional.malIF(), true);
         base.put("do", Conditional.malDO(), true);
         base.put("fn*", Function.lambda(), true);
+        base.put("eval", Function.eval(), true);
 
         base.put("chan", Channel.createChannel(), true);
         base.put("<-", Channel.receive(), true);
         base.put("->", Channel.send(), true);
         base.put("run", Channel.run(), true);
 
-        Evaluator initEval = new Evaluator(base);
-        // TODO: load this from a file
-        String initCode = "(def! not (fn* (a) (if a false true)))";
+        String initCode;
+        try {
+            initCode = "(do "
+                    + Files.readString(Path.of(MalEnvironment.class.getClassLoader().getResource("environment/init.mal").getPath()))
+                    + " )";
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-            try {
+        try {
                 MalType ast = new Parser(new Reader(initCode)).getAST();
-                initEval.nextTask(ast);
-                initEval.evaluate();
+                ast.eval(base);
             } catch (MalParserException | MalExecutionException e) {
                 throw new RuntimeException(e);
             }

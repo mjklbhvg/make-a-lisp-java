@@ -2,8 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f50b559d-b807-4d39-8923-80305104cc31" name="Changes" comment="channels and run, probably bad lol">
+      <change afterPath="$PROJECT_DIR$/src/environment/init.mal" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/mal/TCO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/builtin/Channel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Channel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/builtin/Conditional.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Conditional.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/builtin/Env.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Env.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/builtin/Function.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Function.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/builtin/Numeric.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Numeric.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/builtin/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Util.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/environment/MalEnvironment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/environment/MalEnvironment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mal/Evaluator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mal/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mal/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mal/Repl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mal/Repl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalBool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalBool.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalCallable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalCallable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalChannel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalChannel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalContainer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalKeyword.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalKeyword.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalLambda.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalLambda.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalNil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalNil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalNumber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalNumber.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalSpecial.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalSpecial.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalString.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalString.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalSymbol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalVector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalVector.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +146,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662399893039</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="channels and run, probably bad lol">
+      <created>1662400750137</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1662400750137</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

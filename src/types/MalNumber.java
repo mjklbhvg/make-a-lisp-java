@@ -1,9 +1,9 @@
 package types;
 
+import environment.MalEnvironment;
 import exceptions.MalExecutionException;
-import mal.Evaluator;
 
-public class MalNumber implements MalType {
+public class MalNumber extends MalType {
 
     private double value;
 
@@ -29,12 +29,7 @@ public class MalNumber implements MalType {
     }
 
     @Override
-    public MalType eval(Evaluator evaluator) {
+    public MalType evalType(MalEnvironment environment) {
         return this;
-    }
-
-    @Override
-    public String rawString() {
-        return toString();
     }
 }

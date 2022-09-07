@@ -4,20 +4,22 @@ import environment.MalEnvironment;
 import exceptions.MalExecutionException;
 import exceptions.MalParserException;
 import types.MalList;
+import types.MalType;
 
 import java.io.*;
 
 public class Repl {
 
     private BufferedReader reader;
-    private Evaluator replEval;
+
+    private MalEnvironment replEnv;
     private String prompt;
 
     public Repl() {
         reader = new BufferedReader(
                 new InputStreamReader(System.in)
         );
-        replEval = new Evaluator(MalEnvironment.getBaseEnvironment());
+        replEnv = MalEnvironment.getBaseEnvironment();
         prompt = System.getProperty("user.name") + "> ";
     }
 
@@ -57,19 +59,18 @@ public class Repl {
 
         MalEnvironment backupEnvironment;
         try {
-            backupEnvironment = (MalEnvironment) replEval.getEnvironment().clone();
+            backupEnvironment = (MalEnvironment) replEnv.clone();
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
-        replEval.nextTask(ast);
+
         try {
-            System.out.println("=> " +
-                    replEval.evaluate()
-                            .toString()
-            );
+            MalType result = ast.eval(replEnv);
+
+            System.out.println("=> " + result.toString());
         } catch (MalExecutionException e) {
             System.out.println("Evaluator Error: " + e);
-            replEval.setEnvironment(backupEnvironment);
+            replEnv = backupEnvironment;
             System.out.println("Restored environment (⌐■_■)");
         }
         return true;

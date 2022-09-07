@@ -1,9 +1,11 @@
 package types;
 
+import environment.MalEnvironment;
 import exceptions.MalExecutionException;
-import mal.Evaluator;
+import mal.TCO;
 
-public class MalList extends MalVector implements MalType {
+
+public class MalList extends MalVector {
     private boolean mainAST = false;
 
     public MalList() {
@@ -36,8 +38,7 @@ public class MalList extends MalVector implements MalType {
         return str.toString();
     }
 
-    @Override
-    public MalType eval(Evaluator evaluator) throws MalExecutionException {
+    public MalType evalType(MalEnvironment environment) throws MalExecutionException, TCO {
         if (size() == 0)
             return this;
 
@@ -48,27 +49,29 @@ public class MalList extends MalVector implements MalType {
         // to the let* special
         MalList evaluatedList = new MalList();
         evaluatedList.setMainAST(mainAST);
-        evaluatedList.add(get(0).eval(evaluator));
+        evaluatedList.add(get(0).eval(environment));
         for (int i = 1; i < size(); i++)
             evaluatedList.add(get(i));
 
-        if (!mainAST && evaluatedList.get(0) instanceof MalSpecial spec)
-            return spec.execute(evaluatedList, evaluator);
+        if (!mainAST && evaluatedList.get(0) instanceof MalSpecial spec) {
+            return spec.execute(evaluatedList, environment);
+        }
 
         for (int i = 1; i < size(); i++)
-            evaluatedList.set(i, get(i).eval(evaluator));
+            evaluatedList.set(i, get(i).eval(environment));
 
         if (mainAST)
             return evaluatedList;
 
-        if (evaluatedList.get(0) instanceof MalCallable func)
-            return func.execute(evaluatedList, evaluator);
+        if (evaluatedList.get(0) instanceof MalCallable func) {
+            return func.execute(evaluatedList, environment);
+        }
         else
             throw new MalExecutionException(evaluatedList.get(0) + " can't be called as a function");
     }
 
     @Override
-    public MalContainer checkComplete() {
+    public MalType checkComplete() {
         return this;
     }
 }

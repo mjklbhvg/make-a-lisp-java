@@ -1,21 +1,18 @@
 package types;
 
+import environment.MalEnvironment;
 import exceptions.MalExecutionException;
-import mal.Evaluator;
+import mal.TCO;
 
-public abstract class MalCallable implements MalType {
-    protected abstract MalType execute(MalList args, Evaluator evaluator) throws MalExecutionException;
+public abstract class MalCallable extends MalType {
+    protected abstract MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException, TCO;
 
     @Override
-    public MalType eval(Evaluator evaluator) {
+    public MalType evalType(MalEnvironment environment) {
         return this;
     }
 
     public String toString() {
         return "#<function>";
-    }
-
-    public String rawString() {
-        return toString();
     }
 }

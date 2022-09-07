@@ -1,7 +1,7 @@
 package builtin;
 
+import environment.MalEnvironment;
 import exceptions.MalExecutionException;
-import mal.Evaluator;
 import types.MalCallable;
 import types.MalList;
 import types.MalNumber;
@@ -11,7 +11,7 @@ public class Numeric {
     public static MalCallable add() {
         return new MalCallable() {
             @Override
-            public MalType execute(MalList args, Evaluator evaluator) throws MalExecutionException {
+            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
                 if (args.size() <= 1)
                     throw new MalExecutionException("add needs more arguments");
 
@@ -28,7 +28,7 @@ public class Numeric {
     public static MalCallable subtract() {
         return new MalCallable() {
             @Override
-            protected MalType execute(MalList args, Evaluator evaluator) throws MalExecutionException {
+            protected MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
                 if (args.size() <= 1)
                     throw new MalExecutionException("subtract needs more arguments");
 
@@ -51,7 +51,7 @@ public class Numeric {
     public static MalCallable multiply() {
         return new MalCallable() {
             @Override
-            protected MalType execute(MalList args, Evaluator evaluator) throws MalExecutionException {
+            protected MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
                 if (args.size() <= 1)
                     throw new MalExecutionException("multiply needs more arguments");
 
@@ -68,7 +68,7 @@ public class Numeric {
     public static MalCallable divide() {
         return new MalCallable() {
             @Override
-            protected MalType execute(MalList args, Evaluator evaluator) throws MalExecutionException {
+            protected MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
                 if (args.size() <= 1)
                     throw new MalExecutionException("divide needs more arguments");
 

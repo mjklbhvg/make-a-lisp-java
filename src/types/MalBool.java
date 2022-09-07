@@ -1,9 +1,9 @@
 package types;
 
-import mal.Evaluator;
+import environment.MalEnvironment;
 import mal.Keywords;
 
-public class MalBool implements MalType {
+public class MalBool extends MalType {
 
     private boolean value;
 
@@ -12,7 +12,7 @@ public class MalBool implements MalType {
     }
 
     @Override
-    public MalType eval(Evaluator evaluator) {
+    public MalType evalType(MalEnvironment environment) {
         return this;
     }
 
@@ -28,9 +28,5 @@ public class MalBool implements MalType {
         if (value)
             return Keywords.TRUE;
         return Keywords.FALSE;
-    }
-
-    public String rawString() {
-        return toString();
     }
 }

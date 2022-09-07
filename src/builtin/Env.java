@@ -2,13 +2,13 @@ package builtin;
 
 import environment.MalEnvironment;
 import exceptions.MalExecutionException;
-import mal.Evaluator;
+import mal.TCO;
 import types.*;
 
 public class Env {
     public static MalSpecial addEnvironment() {
         return new MalSpecial() {
-            public MalType execute(MalList args, Evaluator evaluator) throws MalExecutionException {
+            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException, TCO {
                 if (!(args.size() == 3))
                     throw new MalExecutionException("let* takes 2 arguments");
 
@@ -18,14 +18,13 @@ public class Env {
                 if (bindings.size() % 2 != 0)
                     throw new MalExecutionException("mismatched keys and values in let*");
 
-                MalEnvironment newEnv = new MalEnvironment(evaluator.getEnvironment());
+                MalEnvironment newEnv = new MalEnvironment(environment);
                 for (int i = 0; i < bindings.size(); i += 2) {
                     if (!(bindings.get(i) instanceof MalSymbol sym))
                         throw new MalExecutionException("expected a variable name, not" + bindings.get(i));
                     newEnv.set(sym.value(), bindings.get(i + 1));
                 }
-                evaluator.nextTask(args.get(2), newEnv);
-                return null;
+                throw new TCO(args.get(2), newEnv);
             }
         };
     }
@@ -33,15 +32,15 @@ public class Env {
     public static MalSpecial modifyEnvironment() {
         return new MalSpecial() {
             @Override
-            protected MalType execute(MalList args, Evaluator evaluator) throws MalExecutionException {
+            protected MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
                 if (!(args.size() == 3))
                     throw new MalExecutionException("def! takes 2 arguments");
 
                 if (!(args.get(1) instanceof MalSymbol sym))
                     throw new MalExecutionException("expected a variable name, not" + args.get(1));
 
-                MalType value = args.get(2).eval(evaluator);
-                evaluator.getEnvironment().set(sym.value(), value);
+                MalType value = args.get(2).eval(environment);
+                environment.set(sym.value(), value);
                 return value;
             }
         };
