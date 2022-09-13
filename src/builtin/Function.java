@@ -9,15 +9,10 @@ import java.util.ArrayList;
 
 public class Function {
     public static MalSpecial lambda() {
-        return new MalSpecial() {
+        return new MalSpecial(new Class[]{MalVector.class, MalType.class}, null, false) {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
-                if (args.size() != 3)
-                    throw new MalExecutionException("a lambda expects 2 arguments");
-
-                // TODO: maybe accept vectors as well or even hash maps for default parameters
-                if (!(args.get(1) instanceof MalList symbolList))
-                    throw new MalExecutionException("a lambda needs a list of arguments");
+            public MalType executeChecked(MalList args, MalEnvironment environment) throws MalExecutionException {
+                MalVector symbolList = (MalVector) args.get(1);
 
                 ArrayList<String> arguments = new ArrayList<>();
                 for (int i = 0; i < symbolList.size(); i++) {
@@ -25,20 +20,17 @@ public class Function {
                         throw new MalExecutionException("expected variable name, not " + symbolList.get(i));
                     arguments.add(symbol.value());
                 }
-                return new MalLambda(arguments, args.get(2), new MalEnvironment(environment));
+                return new MalLambda(arguments, args.get(2), environment);
             }
         };
     }
 
     public static MalCallable eval() {
-        return new MalCallable() {
+        return new MalCallable(new Class[]{MalType.class}, null, false) {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException, TCO {
-                if (args.size() != 2)
-                    throw new MalExecutionException("eval expects 1 argument");
+            public MalType executeChecked(MalList args, MalEnvironment environment) throws TCO {
                 throw new TCO(args.get(1), environment.getRoot());
             }
         };
     }
-
 }

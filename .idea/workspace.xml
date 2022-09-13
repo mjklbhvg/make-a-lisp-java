@@ -6,22 +6,17 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f50b559d-b807-4d39-8923-80305104cc31" name="Changes" comment="fixed tail call optimisation (I hope)">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/MalAtom.java" afterDir="false" />
+    <list default="true" id="f50b559d-b807-4d39-8923-80305104cc31" name="Changes" comment="quotes + more generic argument check for builtin functions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/builtin/Channel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Channel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/builtin/Conditional.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Conditional.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/builtin/Env.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Env.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/builtin/Function.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Function.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/builtin/Numeric.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Numeric.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/builtin/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Util.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/environment/MalEnvironment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/environment/MalEnvironment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/environment/init.mal" beforeDir="false" afterPath="$PROJECT_DIR$/src/environment/init.mal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mal/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mal/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/MalCallable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalCallable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mal/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mal/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalAtom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalAtom.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/MalLambda.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalLambda.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/MalNumber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalNumber.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalType.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,7 +147,21 @@
       <option name="project" value="LOCAL" />
       <updated>1662509621314</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="atoms">
+      <created>1662572608383</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1662572608383</updated>
+    </task>
+    <task id="LOCAL-00013" summary="quotes + more generic argument check for builtin functions">
+      <created>1663103460877</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1663103460877</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -180,7 +189,9 @@
     <MESSAGE value="channels and run, probably bad" />
     <MESSAGE value="channels and run, probably bad lol" />
     <MESSAGE value="fixed tail call optimisation (I hope)" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed tail call optimisation (I hope)" />
+    <MESSAGE value="atoms" />
+    <MESSAGE value="quotes + more generic argument check for builtin functions" />
+    <option name="LAST_COMMIT_MESSAGE" value="quotes + more generic argument check for builtin functions" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -17,8 +17,14 @@ public class MalSymbol extends MalType {
     public String value() {return sym;}
 
     @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MalSymbol s))
+            return false;
+        return sym.equals(s.sym);
+    }
+
+    @Override
     public MalType evalType(MalEnvironment environment) throws MalExecutionException {
-            return environment.get(sym)
-                    .eval(environment);
+            return environment.get(sym);
     }
 }

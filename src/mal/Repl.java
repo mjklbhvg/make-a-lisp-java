@@ -53,7 +53,7 @@ public class Repl {
         try {
             ast = new Parser(tokenizer).getAST();
         } catch (MalParserException e) {
-            System.out.println("Parser Error: " + e);
+            System.out.println("" + e);
             return true;
         }
 
@@ -69,7 +69,7 @@ public class Repl {
 
             System.out.println("=> " + result.toString());
         } catch (MalExecutionException e) {
-            System.out.println("Evaluator Error: " + e);
+            System.out.println("" + e);
             replEnv = backupEnvironment;
             System.out.println("Restored environment (⌐■_■)");
         }

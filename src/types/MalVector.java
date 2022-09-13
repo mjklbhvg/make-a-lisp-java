@@ -29,13 +29,23 @@ public class MalVector extends MalType implements MalContainer {
         list.add(t);
     }
 
+    public void addAll(MalVector v) {
+        list.addAll(v.list);
+    }
+
     public MalType get(int i) {
         return list.get(i);
     }
 
     public boolean equals(Object o) {
         if (o instanceof MalVector vec) {
-            return super.equals(vec);
+            if (size() != vec.size())
+                return false;
+            for (int i = 0; i < size(); i++) {
+                if (!get(i).equals(vec.get(i)))
+                    return false;
+            }
+            return true;
         }
         return false;
     }

@@ -16,6 +16,8 @@ public abstract class MalType {
                } catch (TCO tailCall) {
                     t = tailCall.evalNext;
                     e = tailCall.nextEnvironment;
+               //     System.out.print("tco ");
+               //     e.dump();
                }
           }
      }

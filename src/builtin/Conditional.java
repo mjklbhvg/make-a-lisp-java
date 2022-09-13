@@ -7,11 +7,9 @@ import types.*;
 
 public class Conditional {
     public static MalSpecial malIF() {
-        return new MalSpecial() {
+        return new MalSpecial(new Class[]{MalType.class, MalType.class}, new Class[]{MalType.class}, false) {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException, TCO {
-                if (args.size() != 3 && args.size() != 4)
-                    throw new MalExecutionException("if needs 2 or 3 arguments");
+            public MalType executeChecked(MalList args, MalEnvironment environment) throws MalExecutionException, TCO {
                 MalType result = args.get(1).eval(environment);
                 boolean conditionTrue = !(result instanceof MalNil);
                 if (conditionTrue && result instanceof MalBool resBool)
@@ -23,17 +21,16 @@ public class Conditional {
                     chosen = args.get(2);
                 else if (args.size() == 4)
                     chosen = args.get(3);
+           //     System.out.println("if chosen: "+chosen);
                 throw new TCO(chosen, environment);
             }
         };
     }
 
     public static MalSpecial malDO() {
-        return new MalSpecial() {
+        return new MalSpecial(new Class[]{MalType.class}, null, true) {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException, TCO {
-                if (args.size() < 2)
-                    throw new MalExecutionException("do needs at least 1 argument");
+            public MalType executeChecked(MalList args, MalEnvironment environment) throws MalExecutionException, TCO {
                 for (int i = 1; i < args.size() - 1; i++)
                     args.get(i).eval(environment);
                 throw new TCO(args.get(args.size() - 1), environment);
@@ -42,11 +39,9 @@ public class Conditional {
     }
 
     public static MalCallable equals() {
-        return new MalCallable() {
+        return new MalCallable(new Class[]{MalType.class, MalType.class}, null, false) {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) {
-                if (args.size() != 3)
-                    return new MalBool(false);
+            public MalType executeChecked(MalList args, MalEnvironment environment) {
                 if (args.get(1).equals(args.get(2)))
                     return new MalBool(true);
                 return new MalBool(false);
@@ -55,59 +50,38 @@ public class Conditional {
     }
 
     public static MalCallable greater() {
-        return new MalCallable() {
+        return new MalCallable(new Class[]{MalNumber.class, MalNumber.class}, null, false) {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
-                if (args.size() != 3
-                        || !(args.get(1) instanceof MalNumber a)
-                        || !(args.get(2) instanceof MalNumber b))
-                    throw new MalExecutionException("comparison only works on 2 numbers");
-
-                return new MalBool(a.value() > b.value());
+            public MalType executeChecked(MalList args, MalEnvironment environment) {
+                return new MalBool(((MalNumber) args.get(1)).value() > ((MalNumber) args.get(2)).value());
             }
         };
     }
 
     public static MalCallable greaterEq() {
-        return new MalCallable() {
+        return new MalCallable(new Class[]{MalNumber.class, MalNumber.class}, null, false) {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
-                if (args.size() != 3
-                        || !(args.get(1) instanceof MalNumber a)
-                        || !(args.get(2) instanceof MalNumber b))
-                    throw new MalExecutionException("comparison only works on 2 numbers");
-
-                return new MalBool(a.value() >= b.value());
+            public MalType executeChecked(MalList args, MalEnvironment environment) {
+                return new MalBool(((MalNumber) args.get(1)).value() >= ((MalNumber) args.get(2)).value());
             }
         };
     }
 
     public static MalCallable less() {
-        return new MalCallable() {
+        return new MalCallable(new Class[]{MalNumber.class, MalNumber.class}, null, false) {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
-                if (args.size() != 3
-                        || !(args.get(1) instanceof MalNumber a)
-                        || !(args.get(2) instanceof MalNumber b))
-                    throw new MalExecutionException("comparison only works on 2 numbers");
-
-                return new MalBool(a.value() < b.value());
+            public MalType executeChecked(MalList args, MalEnvironment environment) {
+                return new MalBool(((MalNumber) args.get(1)).value() < ((MalNumber) args.get(2)).value());
             }
         };
     }
 
     public static MalCallable lessEq() {
-        return new MalCallable() {
+        return new MalCallable(new Class[]{MalNumber.class, MalNumber.class}, null, false) {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
-                if (args.size() != 3
-                        || !(args.get(1) instanceof MalNumber a)
-                        || !(args.get(2) instanceof MalNumber b))
-                    throw new MalExecutionException("comparison only works on 2 numbers");
-
-                return new MalBool(a.value() <= b.value());
+            public MalType executeChecked(MalList args, MalEnvironment environment) {
+                return new MalBool(((MalNumber) args.get(1)).value() <= ((MalNumber) args.get(2)).value());
             }
         };
     }
-
 }

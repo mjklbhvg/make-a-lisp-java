@@ -7,9 +7,9 @@ import types.*;
 public class Channel {
 
     public static MalCallable createChannel() {
-        return new MalCallable() {
+        return new MalCallable(new Class[]{}, null, false) {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
+            public MalType executeChecked(MalList args, MalEnvironment environment) throws MalExecutionException {
                 if (args.size() > 1)
                     throw new MalExecutionException("create channel doesn't take any arguments");
                 return new MalChannel();
@@ -18,38 +18,28 @@ public class Channel {
     }
 
     public static MalCallable send() {
-        return new MalCallable() {
+        return new MalCallable(new Class[]{MalChannel.class, MalType.class}, null, false) {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
-                if (args.size() != 3)
-                    throw new MalExecutionException("send takes 2 arguments");
-                MalType c = args.get(1).eval(environment);
-                if (!(c instanceof MalChannel channel))
-                    throw new MalExecutionException("send needs a channel");
-                boolean success = channel.add(args.get(2));
+            public MalType executeChecked(MalList args, MalEnvironment environment) {
+                boolean success = ((MalChannel) args.get(1)).add(args.get(2));
                 return new MalBool(success);
             }
         };
     }
 
     public static MalCallable receive() {
-        return new MalCallable() {
+        return new MalCallable(new Class[]{MalChannel.class}, null, false) {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
-                if (args.size() != 2
-                        || !(args.get(1) instanceof MalChannel channel))
-                    throw new MalExecutionException("receive expects a single argument (channel)");
-                return channel.take();
+            public MalType executeChecked(MalList args, MalEnvironment environment) {
+                return ((MalChannel) args.get(1)).take();
             }
         };
     }
 
     public static MalSpecial run() {
-        return new MalSpecial() {
+        return new MalSpecial(new Class[]{MalType.class}, null, false) {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) throws MalExecutionException {
-                if (args.size() < 2)
-                    throw new MalExecutionException("run needs 1 argument");
+            public MalType executeChecked(MalList args, MalEnvironment environment) {
                 new Thread(() -> {
                     try {
                         args.get(1).eval(new MalEnvironment(environment));

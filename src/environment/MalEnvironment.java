@@ -55,6 +55,13 @@ public class MalEnvironment implements Cloneable {
         return super.clone();
     }
 
+    public void dump() {
+        if (outerEnv == null)
+            return;
+        for (String key : store.keySet())
+            System.out.println(key + " -> "+store.get(key));
+    }
+
     public static MalEnvironment getBaseEnvironment() {
         MalEnvironment base = new MalEnvironment(null);
         base.put("+", Numeric.add(), false);
@@ -81,6 +88,8 @@ public class MalEnvironment implements Cloneable {
         base.put("deref", Util.deref(), false);
         base.put("reset!", Util.resetAtom(), false);
         base.put("swap!", Util.swap(), false);
+        base.put("cons", Util.cons(), false);
+        base.put("concat", Util.concat(), false);
 
         base.put("let*", Env.addEnvironment(), true);
         base.put("def!", Env.modifyEnvironment(), true);
@@ -88,6 +97,8 @@ public class MalEnvironment implements Cloneable {
         base.put("do", Conditional.malDO(), true);
         base.put("fn*", Function.lambda(), true);
         base.put("eval", Function.eval(), true);
+        base.put("quote", Quote.quote(), true);
+        base.put("quasiquote", Quote.quasiquote(), true);
 
         base.put("chan", Channel.createChannel(), true);
         base.put("<-", Channel.receive(), true);
@@ -106,9 +117,9 @@ public class MalEnvironment implements Cloneable {
         try {
                 MalType ast = new Parser(new Reader(initCode)).getAST();
                 ast.eval(base);
-            } catch (MalParserException | MalExecutionException e) {
-                throw new RuntimeException(e);
-            }
+        } catch (MalParserException | MalExecutionException e) {
+            throw new RuntimeException(e);
+        }
         return base;
     }
 }

@@ -1,7 +1,6 @@
 package types;
 
 import environment.MalEnvironment;
-import exceptions.MalExecutionException;
 
 public class MalNumber extends MalType {
 
@@ -24,11 +23,6 @@ public class MalNumber extends MalType {
         if (str.endsWith(".0")) // FIXME: LOL
             return str.substring(0, str.length() - 2);
         return str;
-    }
-
-    public static void assertIsNumber(MalType t) throws MalExecutionException {
-        if (!(t instanceof MalNumber))
-            throw new MalExecutionException("'" + t.toString() + "' can't be used as a number");
     }
 
     @Override

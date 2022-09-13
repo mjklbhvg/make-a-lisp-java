@@ -26,6 +26,6 @@ public class MalAtom extends MalType {
     }
 
     public String toString() {
-        return "atom<"+value.toString()+">";
+        return "(atom "+value.toString()+")";
     }
 }
