@@ -53,6 +53,13 @@ public class MalList extends MalVector {
         for (int i = 1; i < size(); i++)
             evaluatedList.add(get(i));
 
+        if (!mainAST && evaluatedList.get(0) instanceof MalMacro macro) {
+            evaluatedList = macro.expand(evaluatedList, environment);
+            if (evaluatedList.size() == 0)
+                return evaluatedList;
+            evaluatedList.set(0, evaluatedList.get(0).eval(environment));
+        }
+
         if (!mainAST && evaluatedList.get(0) instanceof MalSpecial spec) {
             return spec.execute(evaluatedList, environment);
         }

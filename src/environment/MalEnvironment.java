@@ -90,9 +90,15 @@ public class MalEnvironment implements Cloneable {
         base.put("swap!", Util.swap(), false);
         base.put("cons", Util.cons(), false);
         base.put("concat", Util.concat(), false);
+        base.put("vec", Util.vec(), false);
+        base.put("macroexpand", Function.macroexpand(), false);
+        base.put("nth", Util.nth(), false);
+        base.put("first", Util.first(), false);
+        base.put("rest", Util.rest(), false);
 
         base.put("let*", Env.addEnvironment(), true);
         base.put("def!", Env.modifyEnvironment(), true);
+        base.put("defmacro!", Env.defineMacro(), true);
         base.put("if", Conditional.malIF(), true);
         base.put("do", Conditional.malDO(), true);
         base.put("fn*", Function.lambda(), true);

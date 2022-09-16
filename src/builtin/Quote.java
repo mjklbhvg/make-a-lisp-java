@@ -26,14 +26,24 @@ public class Quote {
     }
 
     private static MalType qq_internal(MalType ast) throws MalExecutionException {
-        if (ast instanceof MalList list) {
-            if (list.isEmpty())
-                return new MalList();
-            if (list.get(0) instanceof MalSymbol sym && sym.value().equals("unquote")) {
+        if (ast instanceof MalVector list) {
+            boolean isList = list instanceof MalList;
+
+            if (list.isEmpty()) {
+                if (isList)
+                    return new MalList();
+                else
+                    return new MalVector();
+            }
+
+            if (isList
+                    && list.get(0) instanceof MalSymbol sym
+                    && sym.value().equals("unquote")) {
                 if (list.size() != 2)
                     throw new MalExecutionException("wrong argument count for unquote (expected 1)");
                 return list.get(1);
             }
+
             MalList resultList = new MalList();
             for (int i = list.size() - 1; i >= 0; i--) {
                 MalType elt = list.get(i);
@@ -55,7 +65,12 @@ public class Quote {
                 tmp.add(qq_internal(elt));
                 tmp.add(resultList);
                 resultList = tmp;
-
+            }
+            if (!isList) {
+                MalList resultAsVec = new MalList();
+                resultAsVec.add(new MalSymbol("vec"));
+                resultAsVec.add(resultList);
+                return resultAsVec;
             }
             return resultList;
         } else if (ast instanceof MalSymbol || ast instanceof MalTable) {

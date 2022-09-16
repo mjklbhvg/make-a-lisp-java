@@ -17,13 +17,14 @@ public class MalLambda extends MalCallable {
         this.body = body;
         this.closureEnv = closureEnv;
     }
+
     @Override
     public MalType executeChecked(MalList args, MalEnvironment environment) throws MalExecutionException, TCO {
         MalEnvironment e = new MalEnvironment(closureEnv);
 
         // TODO: variadic args
         if (args.size() - 1 != argumentSymbols.size())
-            throw new MalExecutionException("lambda expected " + argumentSymbols.size() + " argument(s), not " + (args.size() - 1));
+            throw new MalExecutionException(this + " expected " + argumentSymbols.size() + " argument(s), not " + (args.size() - 1));
 
         for (int i = 0; i < argumentSymbols.size(); i++) {
             e.set(argumentSymbols.get(i), args.get(i + 1));

@@ -7,9 +7,9 @@ import types.*;
 
 public class Env {
    public static MalSpecial addEnvironment() {
-        return new MalSpecial(new Class[]{MalList.class, MalType.class}, null, false) {
+        return new MalSpecial(new Class[]{MalVector.class, MalType.class}, null, false) {
             public MalType executeChecked(MalList args, MalEnvironment environment) throws MalExecutionException, TCO {
-                MalList bindings = (MalList) args.get(1);
+                MalVector bindings = (MalVector) args.get(1);
 
                 if (bindings.size() % 2 != 0)
                     throw new MalExecutionException("mismatched keys and values in let*");
@@ -34,5 +34,19 @@ public class Env {
                 return value;
             }
         };
+    }
+
+    public static MalSpecial defineMacro() {
+       return new MalSpecial(new Class[]{MalSymbol.class, MalType.class}, null, false) {
+           @Override
+           public MalType executeChecked(MalList args, MalEnvironment environment) throws MalExecutionException {
+               MalType value = args.get(2).eval(environment);
+               if (!(value instanceof MalLambda lambda))
+                   throw new MalExecutionException("defmacro must bind a lambda");
+               MalMacro macro = new MalMacro(lambda);
+               environment.set(((MalSymbol) args.get(1)).value(), macro);
+               return macro;
+           }
+       };
     }
 }

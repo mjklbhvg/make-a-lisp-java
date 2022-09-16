@@ -7,5 +7,4 @@ public class Main {
         while (repl.rep());
         repl.exit();
     }
-//(let* (p (+ 2 3) q (+ 2 p)) (+ p q))
 }

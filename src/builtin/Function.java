@@ -33,4 +33,21 @@ public class Function {
             }
         };
     }
+
+    public static MalSpecial macroexpand() {
+        return new MalSpecial(new Class[]{MalList.class}, null, false) {
+            @Override
+            public MalType executeChecked(MalList args, MalEnvironment environment) throws MalExecutionException {
+                if (!MalMacro.isMacroCall(args.get(1), environment))
+                    throw new MalExecutionException("macroexpand expects a macro call");
+                MalList macroCall = (MalList) args.get(1);
+                macroCall.set(0, macroCall.get(0).eval(environment));
+                try {
+                    return ((MalMacro) macroCall.get(0)).expand(macroCall, environment);
+                } catch (TCO tco) {
+                    return tco.evalNext;
+                }
+            }
+        };
+    }
 }

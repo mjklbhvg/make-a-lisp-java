@@ -6,17 +6,19 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f50b559d-b807-4d39-8923-80305104cc31" name="Changes" comment="quotes + more generic argument check for builtin functions">
+    <list default="true" id="f50b559d-b807-4d39-8923-80305104cc31" name="Changes" comment="quotes + more generic argument check for builtin functions + test script">
+      <change afterPath="$PROJECT_DIR$/src/types/MalMacro.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/builtin/Conditional.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Conditional.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/builtin/Env.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Env.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/builtin/Function.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Function.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/builtin/Quote.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Quote.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/builtin/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Util.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/environment/MalEnvironment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/environment/MalEnvironment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/environment/init.mal" beforeDir="false" afterPath="$PROJECT_DIR$/src/environment/init.mal" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/mal/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mal/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/MalAtom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalAtom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mal/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mal/Parser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/MalLambda.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalLambda.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/MalType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/MalList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalList.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,7 +163,14 @@
       <option name="project" value="LOCAL" />
       <updated>1663103460877</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="quotes + more generic argument check for builtin functions + test script">
+      <created>1663161810526</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1663161810526</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -191,7 +200,8 @@
     <MESSAGE value="fixed tail call optimisation (I hope)" />
     <MESSAGE value="atoms" />
     <MESSAGE value="quotes + more generic argument check for builtin functions" />
-    <option name="LAST_COMMIT_MESSAGE" value="quotes + more generic argument check for builtin functions" />
+    <MESSAGE value="quotes + more generic argument check for builtin functions + test script" />
+    <option name="LAST_COMMIT_MESSAGE" value="quotes + more generic argument check for builtin functions + test script" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

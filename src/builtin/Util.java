@@ -203,27 +203,79 @@ public class Util {
     }
 
     public static MalCallable cons() {
-        return new MalCallable(new Class[]{MalType.class, MalList.class}, null, false) {
+        return new MalCallable(new Class[]{MalType.class, MalVector.class}, null, false) {
             @Override
             public MalType executeChecked(MalList args, MalEnvironment environment) {
                 MalList newList = new MalList();
                 newList.add(args.get(1));
-                for (int i = 0; i < ((MalList) args.get(2)).size(); i++)
-                    newList.add(((MalList) args.get(2)).get(i));
+                for (int i = 0; i < ((MalVector) args.get(2)).size(); i++)
+                    newList.add(((MalVector) args.get(2)).get(i));
                 return newList;
             }
         };
     }
 
     public static MalCallable concat() {
-        return new MalCallable(new Class[]{}, new Class[]{MalList.class}, true) {
+        return new MalCallable(new Class[]{}, new Class[]{MalVector.class}, true) {
             @Override
             public MalType executeChecked(MalList args, MalEnvironment environment) {
                 MalList newList = new MalList();
-                for (int i = 1; i < args.size(); i++) {
-                    for (int j = 0; j < ((MalList) args.get(i)).size(); j++)
-                        newList.add(((MalList) args.get(i)).get(j));
+                for (int i = 1; i < args.size(); i++)
+                    newList.addAll((MalVector) args.get(i));
+                return newList;
+            }
+        };
+    }
+
+    public static MalCallable vec() {
+        return new MalCallable(new Class[]{MalVector.class}, null, false) {
+            @Override
+            public MalType executeChecked(MalList args, MalEnvironment environment) {
+                if (args.get(1) instanceof MalList list) {
+                    MalVector vec = new MalVector();
+                    vec.addAll(list);
+                    return vec;
                 }
+                return args.get(1);
+            }
+        };
+    }
+
+    public static MalCallable nth() {
+        return new MalCallable(new Class[]{MalVector.class, MalNumber.class}, null, false) {
+            @Override
+            public MalType executeChecked(MalList args, MalEnvironment environment) throws MalExecutionException {
+                int index = (int) ((MalNumber) args.get(2)).value();
+                if (index >= ((MalVector) args.get(1)).size() || index < 0)
+                    throw new MalExecutionException("list index out of range: len: " + ((MalVector) args.get(1)).size()
+                    + " index: "+ args.get(2));
+                return ((MalVector) args.get(1)).get((int) ((MalNumber) args.get(2)).value());
+            }
+        };
+    }
+
+    public static MalCallable first() {
+        /* TODO: This should accept nil as well, maybe it is a good idea to have no MalNil Type,
+            But instead normal MalTypes can just be null.
+            Maybe use this: https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html
+        */
+        return new MalCallable(new Class[]{MalVector.class}, null, false) {
+            @Override
+            public MalType executeChecked(MalList args, MalEnvironment environment) {
+                if (((MalVector) args.get(1)).size() == 0)
+                    return new MalNil();
+                return ((MalVector) args.get(1)).get(0);
+            }
+        };
+    }
+
+    public static MalCallable rest() {
+        return new MalCallable(new Class[]{MalVector.class}, null, false) {
+            @Override
+            public MalType executeChecked(MalList args, MalEnvironment environment) {
+                MalList newList = new MalList();
+                for (int i = 1; i < ((MalVector) args.get(1)).size(); i++)
+                    newList.add(((MalVector) args.get(1)).get(i));
                 return newList;
             }
         };

@@ -3,8 +3,19 @@ package mal;
 import exceptions.MalParserException;
 import types.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Parser {
     private Reader r;
+
+    private static HashMap<String, String> readerMacros = new HashMap<>(Map.of(
+            "@", "deref",
+            "'", "quote",
+            "`", "quasiquote",
+            "~", "unquote",
+            "~@", "splice-unquote"
+    ));
 
     public Parser (Reader r) {
         this.r = r;
@@ -49,12 +60,12 @@ public class Parser {
             return new MalNumber(Double.parseDouble(tok));
         } catch (NumberFormatException e){}
 
-        // Dereference atoms with '@'
-        if (tok.equals("@")) {
-            MalList derefForm = new MalList();
-            derefForm.add(new MalSymbol("deref"));
-            derefForm.add(readForm());
-            return derefForm;
+        // Expand Reader Macros
+        if (readerMacros.containsKey(tok)) {
+            MalList expanded = new MalList();
+            expanded.add(new MalSymbol(readerMacros.get(tok)));
+            expanded.add(readForm());
+            return expanded;
         }
 
         // MalNil
