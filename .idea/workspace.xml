@@ -6,19 +6,10 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f50b559d-b807-4d39-8923-80305104cc31" name="Changes" comment="quotes + more generic argument check for builtin functions + test script">
-      <change afterPath="$PROJECT_DIR$/src/types/MalMacro.java" afterDir="false" />
+    <list default="true" id="f50b559d-b807-4d39-8923-80305104cc31" name="Changes" comment="macros&#10;&#10;im not sure if they even work properly -&#10;the TCO Throwable stuff is becoming&#10;a bit dangerous now :^)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/builtin/Env.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Env.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/builtin/Function.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Function.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/builtin/Quote.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Quote.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/builtin/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/builtin/Util.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/environment/MalEnvironment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/environment/MalEnvironment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/environment/init.mal" beforeDir="false" afterPath="$PROJECT_DIR$/src/environment/init.mal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mal/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mal/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mal/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mal/Parser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/MalLambda.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalLambda.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/MalList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/MalList.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -170,7 +161,14 @@
       <option name="project" value="LOCAL" />
       <updated>1663161810526</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="macros&#10;&#10;im not sure if they even work properly -&#10;the TCO Throwable stuff is becoming&#10;a bit dangerous now :^)">
+      <created>1663360757960</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1663360757960</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -201,7 +199,9 @@
     <MESSAGE value="atoms" />
     <MESSAGE value="quotes + more generic argument check for builtin functions" />
     <MESSAGE value="quotes + more generic argument check for builtin functions + test script" />
-    <option name="LAST_COMMIT_MESSAGE" value="quotes + more generic argument check for builtin functions + test script" />
+    <MESSAGE value="macros&#10;im not sure if they even work properly -&#10;the TCO Throwable stuff is becoming&#10;a bit dangerous now :^)" />
+    <MESSAGE value="macros&#10;&#10;im not sure if they even work properly -&#10;the TCO Throwable stuff is becoming&#10;a bit dangerous now :^)" />
+    <option name="LAST_COMMIT_MESSAGE" value="macros&#10;&#10;im not sure if they even work properly -&#10;the TCO Throwable stuff is becoming&#10;a bit dangerous now :^)" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

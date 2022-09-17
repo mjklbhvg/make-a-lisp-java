@@ -9,7 +9,6 @@
            (slurp f)
            "\nnil)")))))
 
-;; TODO: implement & args
 (defmacro! cond
   (fn* (& xs)
     (if (> (count xs) 0)
