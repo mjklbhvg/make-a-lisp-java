@@ -10,7 +10,7 @@ public class MalNumber extends MalType {
         this.value = value;
     }
 
-    public double value() {return  value;}
+    public Object value() {return  value;}
 
     public boolean equals(Object o) {
         if (o instanceof MalNumber num)

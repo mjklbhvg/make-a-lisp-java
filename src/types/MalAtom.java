@@ -1,8 +1,6 @@
 package types;
 
 import environment.MalEnvironment;
-import exceptions.MalExecutionException;
-import mal.TCO;
 
 public class MalAtom extends MalType {
 
@@ -13,15 +11,15 @@ public class MalAtom extends MalType {
     }
 
     @Override
-    public MalType evalType(MalEnvironment environment) throws MalExecutionException, TCO {
+    public MalType evalType(MalEnvironment environment) {
         return this;
     }
 
-    public MalType value() {
+    public MalType deref() {
         return value;
     }
 
-    public void setValue(MalType value) {
+    public void setReference(MalType value) {
         this.value = value;
     }
 

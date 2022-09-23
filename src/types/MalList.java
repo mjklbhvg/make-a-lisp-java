@@ -1,7 +1,7 @@
 package types;
 
 import environment.MalEnvironment;
-import exceptions.MalExecutionException;
+import exceptions.MalException;
 import mal.TCO;
 
 
@@ -18,7 +18,11 @@ public class MalList extends MalVector {
         StringBuilder str = new StringBuilder();
         if (!mainAST) str.append('(');
         for (int i = 0; i < size(); i++) {
-            str.append(get(i).toString());
+            try {
+                str.append(get(i).toString());
+            } catch (MalException e) {
+                throw new RuntimeException(e);
+            }
             if (i < size() - 1)
                 str.append(" ");
         }
@@ -30,7 +34,11 @@ public class MalList extends MalVector {
         StringBuilder str = new StringBuilder();
         if (!mainAST) str.append('(');
         for (int i = 0; i < size(); i++) {
-            str.append(get(i).rawString());
+            try {
+                str.append(get(i).rawString());
+            } catch (MalException e) {
+                throw new RuntimeException(e);
+            }
             if (i < size() - 1)
                 str.append(" ");
         }
@@ -38,7 +46,7 @@ public class MalList extends MalVector {
         return str.toString();
     }
 
-    public MalType evalType(MalEnvironment environment) throws MalExecutionException, TCO {
+    public MalType evalType(MalEnvironment environment) throws TCO, MalException {
         if (size() == 0)
             return this;
 
@@ -74,7 +82,7 @@ public class MalList extends MalVector {
             return func.execute(evaluatedList, environment);
         }
         else
-            throw new MalExecutionException(evaluatedList.get(0) + " can't be called as a function");
+            throw new MalException(new MalString(evaluatedList.get(0) + " can't be called as a function"));
     }
 
     @Override

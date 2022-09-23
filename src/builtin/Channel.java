@@ -1,26 +1,24 @@
 package builtin;
 
 import environment.MalEnvironment;
-import exceptions.MalExecutionException;
+import exceptions.MalException;
 import types.*;
 
 public class Channel {
 
     public static MalCallable createChannel() {
-        return new MalCallable(new Class[]{}, null, false) {
+        return new MalCallable() {
             @Override
-            public MalType executeChecked(MalList args, MalEnvironment environment) throws MalExecutionException {
-                if (args.size() > 1)
-                    throw new MalExecutionException("create channel doesn't take any arguments");
+            public MalType execute(MalList args, MalEnvironment environment) {
                 return new MalChannel();
             }
         };
     }
 
     public static MalCallable send() {
-        return new MalCallable(new Class[]{MalChannel.class, MalType.class}, null, false) {
+        return new MalCallable() {
             @Override
-            public MalType executeChecked(MalList args, MalEnvironment environment) {
+            public MalType execute(MalList args, MalEnvironment environment) throws MalException {
                 boolean success = ((MalChannel) args.get(1)).add(args.get(2));
                 return new MalBool(success);
             }
@@ -28,22 +26,22 @@ public class Channel {
     }
 
     public static MalCallable receive() {
-        return new MalCallable(new Class[]{MalChannel.class}, null, false) {
+        return new MalCallable() {
             @Override
-            public MalType executeChecked(MalList args, MalEnvironment environment) {
+            public MalType execute(MalList args, MalEnvironment environment) throws MalException {
                 return ((MalChannel) args.get(1)).take();
             }
         };
     }
 
     public static MalSpecial run() {
-        return new MalSpecial(new Class[]{MalType.class}, null, false) {
+        return new MalSpecial() {
             @Override
-            public MalType executeChecked(MalList args, MalEnvironment environment) {
+            public MalType execute(MalList args, MalEnvironment environment) {
                 new Thread(() -> {
                     try {
                         args.get(1).eval(new MalEnvironment(environment));
-                    } catch (MalExecutionException e) {
+                    } catch (MalException e) {
                         throw new RuntimeException(e);
                     }
                 }).start();

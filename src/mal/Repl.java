@@ -1,7 +1,7 @@
 package mal;
 
 import environment.MalEnvironment;
-import exceptions.MalExecutionException;
+import exceptions.MalException;
 import exceptions.MalParserException;
 import types.MalList;
 import types.MalType;
@@ -20,6 +20,11 @@ public class Repl {
                 new InputStreamReader(System.in)
         );
         replEnv = MalEnvironment.getBaseEnvironment();
+        try {
+            replEnv.set("*ARGV*", new MalList());
+        } catch (MalException e) {
+            throw new RuntimeException(e);
+        }
         prompt = System.getProperty("user.name") + "> ";
     }
 
@@ -66,10 +71,9 @@ public class Repl {
 
         try {
             MalType result = ast.eval(replEnv);
-
             System.out.println("=> " + result.toString());
-        } catch (MalExecutionException e) {
-            System.out.println("" + e);
+        } catch (MalException e) {
+            System.out.println("Uncaught Exception: "+e.getValue());
             replEnv = backupEnvironment;
             System.out.println("Restored environment (⌐■_■)");
         }

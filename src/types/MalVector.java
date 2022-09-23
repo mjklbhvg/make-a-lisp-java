@@ -1,7 +1,7 @@
 package types;
 
 import environment.MalEnvironment;
-import exceptions.MalExecutionException;
+import exceptions.MalException;
 import mal.TCO;
 
 import java.util.ArrayList;
@@ -33,28 +33,35 @@ public class MalVector extends MalType implements MalContainer {
         list.addAll(v.list);
     }
 
-    public MalType get(int i) {
+    public MalType get(int i) throws MalException {
+        if (i < 0 || i >= list.size())
+            throw new MalException(new MalString("Index " + i + " out of bounds for length "+list.size()+"."));
         return list.get(i);
     }
 
     public boolean equals(Object o) {
-        if (o instanceof MalVector vec) {
-            if (size() != vec.size())
-                return false;
+        if (!(o instanceof MalVector vec))
+            return false;
+
+        if (size() != vec.size())
+            return false;
+
+        try {
             for (int i = 0; i < size(); i++) {
-                if (!get(i).equals(vec.get(i)))
+                if (!list.get(i).equals(vec.get(i)))
                     return false;
             }
-            return true;
+        } catch (MalException e) {
+            throw new RuntimeException(e);
         }
-        return false;
+        return true;
     }
 
     public String toString() {
         StringBuilder str = new StringBuilder();
         str.append('[');
         for (int i = 0; i < size(); i++) {
-            str.append(get(i).toString());
+            str.append(list.get(i).toString());
             if (i < size() - 1)
                 str.append(" ");
         }
@@ -63,7 +70,7 @@ public class MalVector extends MalType implements MalContainer {
     }
 
     @Override
-    public MalType evalType(MalEnvironment environment) throws MalExecutionException, TCO {
+    public MalType evalType(MalEnvironment environment) throws TCO, MalException {
         MalVector evaluatedVector = new MalVector();
         for (int i = 0; i < size(); i++)
             evaluatedVector.add(get(i).eval(environment));

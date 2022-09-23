@@ -1,7 +1,7 @@
 package types;
 
 import environment.MalEnvironment;
-import exceptions.MalExecutionException;
+import exceptions.MalException;
 import mal.TCO;
 
 import java.util.ArrayList;
@@ -19,13 +19,13 @@ public class MalLambda extends MalCallable {
     }
 
     @Override
-    public MalType executeChecked(MalList args, MalEnvironment environment) throws MalExecutionException, TCO {
+    public MalType execute(MalList args, MalEnvironment environment) throws MalException, TCO {
         MalEnvironment e = new MalEnvironment(closureEnv);
 
         for (int i = 0; i < argumentSymbols.size(); i++) {
             if (argumentSymbols.get(i).equals("&")) {
                 if (argumentSymbols.size() != i + 2)
-                    throw new MalExecutionException("Expected exactly one symbol name after &");
+                    throw new MalException(new MalString("Expected exactly one symbol name after &"));
                 String name = argumentSymbols.get(i + 1);
                MalList argumentList = new MalList();
                for (i += 1; i < args.size(); i++) {
@@ -35,7 +35,7 @@ public class MalLambda extends MalCallable {
                break;
             } else {
                 if ((i + 1) >= args.size())
-                    throw new MalExecutionException(this + " expected " + argumentSymbols.size() + " argument(s), not " + (args.size() - 1));
+                    throw new MalException(new MalString(this + " expected " + argumentSymbols.size() + " argument(s), not " + (args.size() - 1)));
                 e.set(argumentSymbols.get(i), args.get(i + 1));
             }
         }

@@ -1,7 +1,7 @@
 package builtin;
 
 import environment.MalEnvironment;
-import exceptions.MalExecutionException;
+import exceptions.MalException;
 import mal.TCO;
 import types.*;
 
@@ -9,15 +9,15 @@ import java.util.ArrayList;
 
 public class Function {
     public static MalSpecial lambda() {
-        return new MalSpecial(new Class[]{MalVector.class, MalType.class}, null, false) {
+        return new MalSpecial() {
             @Override
-            public MalType executeChecked(MalList args, MalEnvironment environment) throws MalExecutionException {
+            public MalType execute(MalList args, MalEnvironment environment) throws MalException {
                 MalVector symbolList = (MalVector) args.get(1);
 
                 ArrayList<String> arguments = new ArrayList<>();
                 for (int i = 0; i < symbolList.size(); i++) {
                     if (!(symbolList.get(i) instanceof MalSymbol symbol))
-                        throw new MalExecutionException("expected variable name, not " + symbolList.get(i));
+                        throw new MalException(new MalString("expected variable name, not " + symbolList.get(i)));
                     arguments.add(symbol.value());
                 }
                 return new MalLambda(arguments, args.get(2), environment);
@@ -26,20 +26,20 @@ public class Function {
     }
 
     public static MalCallable eval() {
-        return new MalCallable(new Class[]{MalType.class}, null, false) {
+        return new MalCallable() {
             @Override
-            public MalType executeChecked(MalList args, MalEnvironment environment) throws TCO {
+            public MalType execute(MalList args, MalEnvironment environment) throws MalException, TCO {
                 throw new TCO(args.get(1), environment.getRoot());
             }
         };
     }
 
     public static MalSpecial macroexpand() {
-        return new MalSpecial(new Class[]{MalList.class}, null, false) {
+        return new MalSpecial() {
             @Override
-            public MalType executeChecked(MalList args, MalEnvironment environment) throws MalExecutionException {
+            public MalType execute(MalList args, MalEnvironment environment) throws MalException {
                 if (!MalMacro.isMacroCall(args.get(1), environment))
-                    throw new MalExecutionException("macroexpand expects a macro call");
+                    throw new MalException(new MalString("macroexpand expects a macro call"));
                 MalList macroCall = (MalList) args.get(1);
                 macroCall.set(0, macroCall.get(0).eval(environment));
                 try {

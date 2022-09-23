@@ -16,7 +16,7 @@ public class MalBool extends MalType {
         return this;
     }
 
-    public boolean value() {return value;}
+    public Object value() {return value;}
 
     public boolean equals(Object o) {
         if (o instanceof MalBool malbool)

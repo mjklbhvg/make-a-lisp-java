@@ -1,5 +1,8 @@
 package mal;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -13,6 +16,10 @@ public class Reader {
     private static final Pattern MAL_TOKEN_PATTERN = Pattern.compile(MAL_TOKEN_REGEX);
     private List<String> tokens;
     private int cursor;
+
+    public Reader (Path path) throws IOException {
+        this(Files.readString(path));
+    }
 
     public Reader(String input) {
         cursor = 0;
@@ -32,9 +39,6 @@ public class Reader {
             }
         }
     }
-
-    // TODO: read from files
-    // public mal.Reader (File f) {}
 
     public String next() {
         if (!hasNext())

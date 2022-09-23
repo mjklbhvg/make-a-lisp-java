@@ -1,7 +1,7 @@
 package types;
 
 import environment.MalEnvironment;
-import exceptions.MalExecutionException;
+import exceptions.MalException;
 
 public class MalSymbol extends MalType {
      private String sym;
@@ -24,7 +24,7 @@ public class MalSymbol extends MalType {
     }
 
     @Override
-    public MalType evalType(MalEnvironment environment) throws MalExecutionException {
+    public MalType evalType(MalEnvironment environment) throws MalException {
             return environment.get(sym);
     }
 }

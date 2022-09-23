@@ -17,4 +17,8 @@ public class MalNil extends MalType {
     public boolean equals(Object o) {
         return o instanceof MalNil;
     }
+
+    public Object value() {
+        return null;
+    }
 }

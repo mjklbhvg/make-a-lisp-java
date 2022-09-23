@@ -1,28 +1,34 @@
 package types;
 
 import environment.MalEnvironment;
-import exceptions.MalExecutionException;
+import exceptions.MalException;
 import mal.TCO;
 
 public abstract class MalType {
-     public abstract MalType evalType(MalEnvironment environment) throws MalExecutionException, TCO;
+     public abstract MalType evalType(MalEnvironment environment) throws TCO, MalException;
 
-     public final MalType eval(MalEnvironment environment) throws MalExecutionException {
+     public final MalType eval(MalEnvironment environment) throws MalException {
           MalType t = this;
           MalEnvironment e = environment;
-          while (true) {
-               try {
-                    return t.evalType(e);
-               } catch (TCO tailCall) {
-                    t = tailCall.evalNext;
-                    e = tailCall.nextEnvironment;
-               //     System.out.print("tco ");
-               //     e.dump();
+          try {
+               while (true) {
+                    try {
+                         return t.evalType(e);
+                    } catch (TCO tailCall) {
+                         t = tailCall.evalNext;
+                         e = tailCall.nextEnvironment;
+                    }
                }
+          } catch (ClassCastException exception) {
+               throw new MalException(new MalString(exception.getMessage()));
           }
      }
 
      public String rawString() {
           return toString();
+     }
+
+     public Object value() {
+          return this;
      }
 }

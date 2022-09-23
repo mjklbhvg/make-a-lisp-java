@@ -1,7 +1,6 @@
 package types;
 
 import environment.MalEnvironment;
-import exceptions.MalExecutionException;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -13,7 +12,7 @@ public class MalChannel extends MalType {
         fifo = new ArrayBlockingQueue<>(1024);
     }
     @Override
-    public MalType evalType(MalEnvironment environment) throws MalExecutionException {
+    public MalType evalType(MalEnvironment environment) {
         return this;
     }
 
