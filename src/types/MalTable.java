@@ -40,12 +40,12 @@ public class MalTable extends MalType implements MalContainer {
         str.append("{");
         for (Object key : keyToKey.keySet()) {
             str.append("\n\t");
-            str.append(keyToKey.get(key).toString());
-            str.append(" ⟶ ");
-            str.append(keyToValue.get(key).toString());
+            str.append(keyToKey.get(key).toString().replaceAll("\n", "\n\t"));
+            str.append(" -> ");
+            str.append(keyToValue.get(key).toString().replaceAll("\n", "\n\t\t"));
             str.append(",");
         }
-        str.append("\n   }");
+        str.append("\n}");
         return str.toString();
     }
 
@@ -100,7 +100,7 @@ public class MalTable extends MalType implements MalContainer {
     }
 
     @Override
-    public MalType evalType(MalEnvironment environment) throws MalException {
+    public MalType evalType(MalEnvironment environment, MalType caller) throws MalException {
         MalTable evaluatedTable = new MalTable();
         for (MalType key : keyToKey.values())
             evaluatedTable.put(key, get(key).eval(environment));

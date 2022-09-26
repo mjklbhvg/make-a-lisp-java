@@ -3,12 +3,14 @@
 test (count $argv) -eq 1
 	or exit 1
 
-cd ../../out/production/make-a-lisp/
+#cd ../../out/production/make-a-lisp/
+cd ~/mal/impls/mal
 
 rm /tmp/fifo
 mkfifo /tmp/fifo
 
-fish -c 'java mal/Main < /tmp/fifo' &
+fish -c '../java-again/run stepA_mal.mal < /tmp/fifo' &
+# fish -c 'java mal/Main < /tmp/fifo' &
 
 sleep 999999 > /tmp/fifo &
 echo Starting

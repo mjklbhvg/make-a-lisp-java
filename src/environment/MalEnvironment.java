@@ -12,14 +12,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Objects;
 
 public class MalEnvironment implements Cloneable {
     private MalEnvironment outerEnv;
     private HashMap<String, MalType> store;
-    private static HashSet<String> protectedWords = new HashSet<>();
-
     public MalEnvironment(MalEnvironment outerEnv) {
         this.outerEnv = outerEnv;
         store = new HashMap<>();
@@ -31,18 +28,8 @@ public class MalEnvironment implements Cloneable {
         return outerEnv.getRoot();
     }
 
-    protected void put(String key, MalType value, boolean protect) {
-        store.put(key, value);
-        if (protect)
-            protectedWords.add(key);
-    }
-
-    // prevent the special built-ins like let*, ... from being shadowed or overwritten
     public void set(String key, MalType value) throws MalException {
-        if (protectedWords.contains(key))
-            throw new MalException(new MalString("attempt to shadow or overwrite special builtin " + key));
-        put(key, value, false);
-      //  System.out.println("Set "+key+" to "+value);
+        store.put(key, value);
     }
 
     public MalType get(String key) throws MalException {
@@ -57,90 +44,93 @@ public class MalEnvironment implements Cloneable {
         return super.clone();
     }
 
-    public void dump() {
-        if (outerEnv == null)
-            return;
-        for (String key : store.keySet())
-            System.out.println(key + " -> "+store.get(key));
-    }
-
     public static MalEnvironment getBaseEnvironment() {
         MalEnvironment base = new MalEnvironment(null);
 
-        base.put("list?", Predicate.isList(), false);
-        base.put("empty?", Predicate.isEmpty(), false);
-        base.put("atom?", Predicate.isAtom(), false);
-        base.put("nil?", Predicate.isNil(), false);
-        base.put("symbol?", Predicate.isSymbol(), false);
-        base.put("true?", Predicate.isTrue(), false);
-        base.put("false?", Predicate.isFalse(), false);
-        base.put("symbol?", Predicate.isSymbol(), false);
-        base.put("keyword?", Predicate.isKeyword(), false);
-        base.put("vector?", Predicate.isVector(), false);
-        base.put("sequential?", Predicate.isSequential(), false);
-        base.put("map?", Predicate.isMap(), false);
-        base.put("contains?", Predicate.contains(), false);
+        base.store.put("*host-language*", new MalString("Java"));
+
+        base.store.put("list?", Predicate.isList());
+        base.store.put("empty?", Predicate.isEmpty());
+        base.store.put("atom?", Predicate.isAtom());
+        base.store.put("nil?", Predicate.isNil());
+        base.store.put("symbol?", Predicate.isSymbol());
+        base.store.put("true?", Predicate.isTrue());
+        base.store.put("false?", Predicate.isFalse());
+        base.store.put("keyword?", Predicate.isKeyword());
+        base.store.put("vector?", Predicate.isVector());
+        base.store.put("sequential?", Predicate.isSequential());
+        base.store.put("map?", Predicate.isMap());
+        base.store.put("contains?", Predicate.contains());
+        base.store.put("fn?", Predicate.isFunction());
+        base.store.put("string?", Predicate.isString());
+        base.store.put("number?", Predicate.isNumber());
 
 
-        base.put("+", Numeric.add(), false);
-        base.put("-", Numeric.subtract(), false);
-        base.put("*", Numeric.multiply(), false);
-        base.put("/", Numeric.divide(), false);
+        base.store.put("+", Numeric.add());
+        base.store.put("-", Numeric.subtract());
+        base.store.put("*", Numeric.multiply());
+        base.store.put("/", Numeric.divide());
 
-        base.put("=", Conditional.equals(), false);
-        base.put("<", Conditional.less(), false);
-        base.put("<=", Conditional.lessEq(), false);
-        base.put(">", Conditional.greater(), false);
-        base.put(">=", Conditional.greaterEq(), false);
+        base.store.put("=", Conditional.equals());
+        base.store.put("<", Conditional.less());
+        base.store.put("<=", Conditional.lessEq());
+        base.store.put(">", Conditional.greater());
+        base.store.put(">=", Conditional.greaterEq());
 
-        base.put("prn", Util.print(), false);
-        base.put("println", Util.printRaw(), false);
-        base.put("pr-str", Util.string(), false);
-        base.put("str", Util.stringRaw(), false);
-        base.put("list", Util.list(), false);
-        base.put("count", Util.count(), false);
-        base.put("read-string", Util.readString(), false);
-        base.put("slurp", Util.slurp(), false);
-        base.put("atom", Util.atom(), false);
-        base.put("deref", Util.deref(), false);
-        base.put("reset!", Util.resetAtom(), false);
-        base.put("swap!", Util.swap(), false);
-        base.put("cons", Util.cons(), false);
-        base.put("concat", Util.concat(), false);
-        base.put("vec", Util.vec(), false);
-        base.put("macroexpand", Function.macroexpand(), false);
-        base.put("nth", Util.nth(), false);
-        base.put("first", Util.first(), false);
-        base.put("rest", Util.rest(), false);
-        base.put("apply", Util.apply(), false);
-        base.put("map", Util.map(), false);
-        base.put("symbol", Util.symbol(), false);
-        base.put("keyword", Util.keyword(), false);
-        base.put("vector", Util.vector(), false);
-        base.put("hash-map", Util.hashMap(), false);
-        base.put("assoc", Util.assoc(), false);
-        base.put("dissoc", Util.dissoc(), false);
-        base.put("get", Util.get(), false);
-        base.put("keys", Util.keys(), false);
-        base.put("vals", Util.vals(), false);
+        base.store.put("prn", Util.print());
+        base.store.put("println", Util.printRaw());
+        base.store.put("pr-str", Util.string());
+        base.store.put("str", Util.stringRaw());
+        base.store.put("list", Util.list());
+        base.store.put("count", Util.count());
+        base.store.put("read-string", Util.readString());
+        base.store.put("slurp", Util.slurp());
+        base.store.put("atom", Util.atom());
+        base.store.put("deref", Util.deref());
+        base.store.put("reset!", Util.resetAtom());
+        base.store.put("swap!", Util.swap());
+        base.store.put("cons", Util.cons());
+        base.store.put("concat", Util.concat());
+        base.store.put("vec", Util.vec());
+        base.store.put("macroexpand", Function.macroexpand());
+        base.store.put("nth", Util.nth());
+        base.store.put("first", Util.first());
+        base.store.put("rest", Util.rest());
+        base.store.put("apply", Util.apply());
+        base.store.put("map", Util.map());
+        base.store.put("symbol", Util.symbol());
+        base.store.put("keyword", Util.keyword());
+        base.store.put("vector", Util.vector());
+        base.store.put("hash-map", Util.hashMap());
+        base.store.put("assoc", Util.assoc());
+        base.store.put("dissoc", Util.dissoc());
+        base.store.put("get", Util.get());
+        base.store.put("keys", Util.keys());
+        base.store.put("vals", Util.vals());
+        base.store.put("readline", Util.readline());
+        base.store.put("time-ms", Util.timeMillis());
+        base.store.put("meta", Util.meta());
+        base.store.put("with-meta", Util.withMeta());
+        base.store.put("seq", Util.seq());
+        base.store.put("conj", Util.conj());
 
-        base.put("let*", Env.addEnvironment(), true);
-        base.put("def!", Env.modifyEnvironment(), true);
-        base.put("defmacro!", Env.defineMacro(), true);
-        base.put("if", Conditional.malIF(), true);
-        base.put("do", Conditional.malDO(), true);
-        base.put("fn*", Function.lambda(), true);
-        base.put("eval", Function.eval(), true);
-        base.put("quote", Quote.quote(), true);
-        base.put("quasiquote", Quote.quasiquote(), true);
-        base.put("try*", TryCatch.tryCatch(), true);
-        base.put("catch*", TryCatch.invalidCatch(), true);
-        base.put("throw", TryCatch.throwType(), true);
+        base.store.put("let*", Env.addEnvironment());
+        base.store.put("def!", Env.modifyEnvironment());
+        base.store.put("defmacro!", Env.defineMacro());
+        base.store.put("if", Conditional.malIF());
+        base.store.put("do", Conditional.malDO());
+        base.store.put("fn*", Function.lambda());
+        base.store.put("eval", Function.eval());
+        base.store.put("quote", Quote.quote());
+        base.store.put("quasiquote", Quote.quasiquote());
+        base.store.put("try*", TryCatch.tryCatch());
+        base.store.put("catch*", TryCatch.invalidCatch());
+        base.store.put("throw", TryCatch.throwType());
 
-        base.put("chan", Channel.createChannel(), true);
-        base.put("<-", Channel.receive(), true);
-        base.put("->", Channel.send(), true);
-        base.put("run", Channel.run(), true);
+        base.store.put("chan", Channel.createChannel());
+        base.store.put("<-", Channel.receive());
+        base.store.put("->", Channel.send());
+        base.store.put("run", Channel.run());
 
         String initCode;
         try {

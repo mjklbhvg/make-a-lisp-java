@@ -13,14 +13,11 @@ import java.nio.file.Path;
 
 public class Main {
 
-    //(def! p (pr-str {:abc "val1" :def "val2"}))
-    //(cond (= p "{:abc \"val1\" :def \"val2\"}") true (= p "{:def \"val2\" :abc \"val1\"}") true)
-    //true
-
     public static void main(String[] args) {
 
         if (args.length == 0) {
             Repl repl = new Repl();
+            System.out.println("Mal[Java]");
             while (repl.rep()) ;
             repl.exit();
             return;
@@ -45,8 +42,9 @@ public class Main {
             throw new RuntimeException(e);
         }
         try {
-            System.out.println(ast.eval(env));
+            ast.eval(env);
         } catch (MalException e) {
+            System.err.println(e.getValue());
             throw new RuntimeException(e);
         }
     }

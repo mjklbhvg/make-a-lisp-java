@@ -10,11 +10,11 @@ public class MalKeyword extends MalType {
     }
 
     public String value() {
-        return word;
+        return toString();
     }
 
     @Override
-    public MalType evalType(MalEnvironment environment) {
+    public MalType evalType(MalEnvironment environment, MalType caller) {
         return this;
     }
 

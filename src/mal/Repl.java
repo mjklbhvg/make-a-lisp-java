@@ -25,7 +25,7 @@ public class Repl {
         } catch (MalException e) {
             throw new RuntimeException(e);
         }
-        prompt = System.getProperty("user.name") + "> ";
+        prompt = "\033[1m" +System.getProperty("user.name") + "> \033[m";
     }
 
     public void exit() {

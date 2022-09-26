@@ -2,13 +2,12 @@ package builtin;
 
 import environment.MalEnvironment;
 import exceptions.MalException;
-import mal.TCO;
 import types.*;
 
 public class Env {
    public static MalSpecial addEnvironment() {
         return new MalSpecial() {
-            public MalType execute(MalList args, MalEnvironment environment) throws TCO, MalException {
+            public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 MalVector bindings = (MalVector) args.get(1);
 
                 if (bindings.size() % 2 != 0)
@@ -20,7 +19,8 @@ public class Env {
                         throw new MalException(new MalString("expected a variable name, not" + bindings.get(i)));
                     newEnv.set(sym.value(), bindings.get(i + 1).eval(newEnv));
                 }
-                throw new TCO(args.get(2), newEnv);
+                caller.evalNext(args.get(2), newEnv);
+                return null;
             }
         };
     }
@@ -28,7 +28,7 @@ public class Env {
     public static MalSpecial modifyEnvironment() {
         return new MalSpecial() {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) throws MalException {
+            public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 MalType value = args.get(2).eval(environment);
                 environment.set(((MalSymbol) args.get(1)).value(), value);
                 return value;
@@ -39,7 +39,7 @@ public class Env {
     public static MalSpecial defineMacro() {
        return new MalSpecial() {
            @Override
-           public MalType execute(MalList args, MalEnvironment environment) throws MalException {
+           public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                MalType value = args.get(2).eval(environment);
                if (!(value instanceof MalLambda lambda))
                    throw new MalException(new MalString("defmacro must bind a lambda"));

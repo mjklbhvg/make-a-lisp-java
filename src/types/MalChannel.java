@@ -12,7 +12,7 @@ public class MalChannel extends MalType {
         fifo = new ArrayBlockingQueue<>(1024);
     }
     @Override
-    public MalType evalType(MalEnvironment environment) {
+    public MalType evalType(MalEnvironment environment, MalType caller) {
         return this;
     }
 
@@ -21,7 +21,7 @@ public class MalChannel extends MalType {
             return fifo.take();
             // TODO: an atom will be mutable, copy them here
         } catch (InterruptedException e) {
-            return new MalNil();
+            return MalNil.NIL;
         }
     }
 

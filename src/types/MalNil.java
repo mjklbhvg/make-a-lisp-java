@@ -5,8 +5,9 @@ import mal.Keywords;
 
 public class MalNil extends MalType {
 
+    public static final MalNil NIL = new MalNil();
     @Override
-    public MalType evalType(MalEnvironment environment) {
+    public MalType evalType(MalEnvironment environment, MalType caller) {
         return this;
     }
 
@@ -19,6 +20,6 @@ public class MalNil extends MalType {
     }
 
     public Object value() {
-        return null;
+        return NIL;
     }
 }

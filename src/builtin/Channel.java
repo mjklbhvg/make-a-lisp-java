@@ -9,7 +9,7 @@ public class Channel {
     public static MalCallable createChannel() {
         return new MalCallable() {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) {
+            public MalType execute(MalList args, MalEnvironment environment, MalType caller) {
                 return new MalChannel();
             }
         };
@@ -18,7 +18,7 @@ public class Channel {
     public static MalCallable send() {
         return new MalCallable() {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) throws MalException {
+            public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 boolean success = ((MalChannel) args.get(1)).add(args.get(2));
                 return new MalBool(success);
             }
@@ -28,7 +28,7 @@ public class Channel {
     public static MalCallable receive() {
         return new MalCallable() {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) throws MalException {
+            public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 return ((MalChannel) args.get(1)).take();
             }
         };
@@ -37,7 +37,7 @@ public class Channel {
     public static MalSpecial run() {
         return new MalSpecial() {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) {
+            public MalType execute(MalList args, MalEnvironment environment, MalType caller) {
                 new Thread(() -> {
                     try {
                         args.get(1).eval(new MalEnvironment(environment));
@@ -45,7 +45,7 @@ public class Channel {
                         throw new RuntimeException(e);
                     }
                 }).start();
-                return new MalNil();
+                return MalNil.NIL;
             }
         };
     }

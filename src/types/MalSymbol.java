@@ -14,7 +14,7 @@ public class MalSymbol extends MalType {
         return sym;
     }
 
-    public String value() {return sym;}
+    public String value() { return sym; }
 
     @Override
     public boolean equals(Object obj) {
@@ -24,7 +24,7 @@ public class MalSymbol extends MalType {
     }
 
     @Override
-    public MalType evalType(MalEnvironment environment) throws MalException {
+    public MalType evalType(MalEnvironment environment, MalType caller) throws MalException {
             return environment.get(sym);
     }
 }

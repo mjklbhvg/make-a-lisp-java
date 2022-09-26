@@ -2,7 +2,6 @@ package types;
 
 import environment.MalEnvironment;
 import exceptions.MalException;
-import mal.TCO;
 
 
 public class MalList extends MalVector {
@@ -12,7 +11,9 @@ public class MalList extends MalVector {
         super();
     }
 
-    public void setMainAST(boolean mainAST) {this.mainAST = mainAST;}
+    public void setMainAST(boolean mainAST) {
+        this.mainAST = mainAST;
+    }
 
     public String toString() {
         StringBuilder str = new StringBuilder();
@@ -46,10 +47,9 @@ public class MalList extends MalVector {
         return str.toString();
     }
 
-    public MalType evalType(MalEnvironment environment) throws TCO, MalException {
+    public MalType evalType(MalEnvironment environment, MalType caller) throws MalException {
         if (size() == 0)
             return this;
-
         // Don't call anything as the main AST list:
         // otherwise '+ 1 1' would evaluate to 2 instead of '+ 1 1'
 
@@ -62,26 +62,32 @@ public class MalList extends MalVector {
             evaluatedList.add(get(i));
 
         if (!mainAST && evaluatedList.get(0) instanceof MalMacro macro) {
-            evaluatedList = macro.expand(evaluatedList, environment);
+            MalType expanded = macro.expand(evaluatedList, environment);
+            if (!(expanded instanceof MalList list)) {
+                caller.evalNext(expanded, environment);
+                return null;
+            }
+            evaluatedList = list;
             if (evaluatedList.size() == 0)
                 return evaluatedList;
             evaluatedList.set(0, evaluatedList.get(0).eval(environment));
         }
 
         if (!mainAST && evaluatedList.get(0) instanceof MalSpecial spec) {
-            return spec.execute(evaluatedList, environment);
+            caller.executeNext(spec, environment, evaluatedList);
+            return null;
         }
 
-        for (int i = 1; i < size(); i++)
+        for (int i = 1; i < evaluatedList.size(); i++)
             evaluatedList.set(i, get(i).eval(environment));
 
         if (mainAST)
             return evaluatedList;
 
         if (evaluatedList.get(0) instanceof MalCallable func) {
-            return func.execute(evaluatedList, environment);
-        }
-        else
+            caller.executeNext(func, environment, evaluatedList);
+            return null;
+        } else
             throw new MalException(new MalString(evaluatedList.get(0) + " can't be called as a function"));
     }
 

@@ -2,7 +2,6 @@ package types;
 
 import environment.MalEnvironment;
 import exceptions.MalException;
-import mal.TCO;
 
 import java.util.ArrayList;
 
@@ -19,7 +18,7 @@ public class MalLambda extends MalCallable {
     }
 
     @Override
-    public MalType execute(MalList args, MalEnvironment environment) throws MalException, TCO {
+    public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
         MalEnvironment e = new MalEnvironment(closureEnv);
 
         for (int i = 0; i < argumentSymbols.size(); i++) {
@@ -37,9 +36,11 @@ public class MalLambda extends MalCallable {
                 if ((i + 1) >= args.size())
                     throw new MalException(new MalString(this + " expected " + argumentSymbols.size() + " argument(s), not " + (args.size() - 1)));
                 e.set(argumentSymbols.get(i), args.get(i + 1));
+              //  System.out.println("lambda added "+argumentSymbols.get(i)+" ("+args.get(i + 1)+") to env");
             }
         }
-        throw new TCO(body, e);
+       // System.out.println("Lambda call '"+body);
+        caller.evalNext(body, e);
+        return null;
     }
-
 }

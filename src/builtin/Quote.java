@@ -2,14 +2,13 @@ package builtin;
 
 import environment.MalEnvironment;
 import exceptions.MalException;
-import mal.TCO;
 import types.*;
 
 public class Quote {
     public static MalSpecial quote() {
         return new MalSpecial() {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment) throws MalException {
+            public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 return args.get(1);
             }
         };
@@ -18,9 +17,10 @@ public class Quote {
     public static MalSpecial quasiquote() {
       return new MalSpecial() {
           @Override
-          public MalType execute(MalList args, MalEnvironment environment) throws MalException, TCO {
+          public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
               MalType result = qq_internal(args.get(1));
-              throw new TCO(result, environment);
+              caller.evalNext(result, environment);
+              return null;
           }
       };
     }

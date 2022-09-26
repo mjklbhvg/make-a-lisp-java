@@ -1,8 +1,7 @@
 package types;
 
 import environment.MalEnvironment;
-import exceptions.MalExecutionException;
-import mal.TCO;
+import exceptions.MalException;
 
 public class MalMacro extends MalType {
 
@@ -12,19 +11,20 @@ public class MalMacro extends MalType {
         this.lambda = lambda;
     }
 
-    public MalList expand(MalList args, MalEnvironment environment) throws MalExecutionException, TCO {
-        MalType result = null;
-        try {
-            lambda.executeChecked(args, environment);
-        } catch (TCO tco) {
-            result = tco.evalNext.eval(tco.nextEnvironment);
-        }
+    public MalType expand(MalList args, MalEnvironment environment) throws MalException {
+
+        MalType executor = new MalType() {
+            @Override
+            public MalType evalType(MalEnvironment environment, MalType caller) throws MalException {
+                return lambda.execute(args, environment, this);
+            }
+        };
+
+        MalType result = executor.eval(environment);
         while (isMacroCall(result, environment)) {
-            result = result.eval(environment);
+            result = ((MalMacro) ((MalList) result).get(0)).expand((MalList) result, environment);
         }
-        if (!(result instanceof MalList list))
-            throw new TCO(result, environment);
-        return list;
+       return result;
     }
 
     public static boolean isMacroCall(MalType t, MalEnvironment env) {
@@ -32,14 +32,14 @@ public class MalMacro extends MalType {
             return false;
         if (list.isEmpty())
             return false;
-        if (!(list.get(0) instanceof MalSymbol sym))
-            return false;
+
         try {
+            if (!(list.get(0) instanceof MalSymbol sym))
+                return false;
             return (sym.eval(env) instanceof MalMacro);
-        } catch (MalExecutionException e) {
+        } catch (MalException e) {
             return false;
         }
-
     }
 
     @Override
@@ -48,7 +48,7 @@ public class MalMacro extends MalType {
     }
 
     @Override
-    public MalType evalType(MalEnvironment environment) throws MalExecutionException, TCO {
+    public MalType evalType(MalEnvironment environment, MalType caller) {
         return this;
     }
 }

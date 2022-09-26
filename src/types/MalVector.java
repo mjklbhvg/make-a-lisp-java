@@ -2,7 +2,6 @@ package types;
 
 import environment.MalEnvironment;
 import exceptions.MalException;
-import mal.TCO;
 
 import java.util.ArrayList;
 
@@ -26,6 +25,8 @@ public class MalVector extends MalType implements MalContainer {
     }
 
     public void add(MalType t) {
+        if (t == null)
+            System.out.println("someone put null D:");
         list.add(t);
     }
 
@@ -70,7 +71,7 @@ public class MalVector extends MalType implements MalContainer {
     }
 
     @Override
-    public MalType evalType(MalEnvironment environment) throws TCO, MalException {
+    public MalType evalType(MalEnvironment environment, MalType caller) throws MalException {
         MalVector evaluatedVector = new MalVector();
         for (int i = 0; i < size(); i++)
             evaluatedVector.add(get(i).eval(environment));

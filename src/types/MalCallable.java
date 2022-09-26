@@ -2,16 +2,12 @@ package types;
 
 import environment.MalEnvironment;
 import exceptions.MalException;
-import mal.TCO;
 
 public abstract class MalCallable extends MalType {
-    public abstract MalType execute(MalList args, MalEnvironment environment) throws TCO, MalException;
-
-     public MalCallable() {
-     }
+    public abstract MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException;
 
     @Override
-    public MalType evalType(MalEnvironment environment) {
+    public MalType evalType(MalEnvironment environment, MalType caller) {
         return this;
     }
 

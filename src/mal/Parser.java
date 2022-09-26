@@ -70,7 +70,7 @@ public class Parser {
 
         // MalNil
         if (tok.equals(Keywords.NIL))
-            return new MalNil();
+            return MalNil.NIL;
         // MalBool
         if (tok.equals(Keywords.TRUE))
             return new MalBool(true);

@@ -26,7 +26,7 @@ public class MalNumber extends MalType {
     }
 
     @Override
-    public MalType evalType(MalEnvironment environment) {
+    public MalType evalType(MalEnvironment environment, MalType caller) {
         return this;
     }
 }
