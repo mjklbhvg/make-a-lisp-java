@@ -18,8 +18,10 @@ public class MalChannel extends MalType {
 
     public MalType take() {
         try {
-            return fifo.take();
-            // TODO: an atom will be mutable, copy them here
+            MalType t = fifo.take();
+            if (t instanceof MalAtom atm)
+                return new MalAtom(atm.dereference());
+            return t;
         } catch (InterruptedException e) {
             return MalNil.NIL;
         }

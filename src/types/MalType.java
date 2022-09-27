@@ -6,10 +6,9 @@ import exceptions.MalException;
 public abstract class MalType {
      public abstract MalType evalType(MalEnvironment environment, MalType caller) throws MalException;
 
+     private enum Action {EVAL, EXEC, EVAL_WITH_EXC, RETURN}
 
-     private final int EVAL = 1, EXEC = 2, EVAL_WITH_EXC = 3;
-
-     private int action = 0;
+     private Action action = Action.RETURN;
 
      protected MalEnvironment newEnv, exceptionEnv;
      private MalSymbol exceptionSymbol;
@@ -18,14 +17,14 @@ public abstract class MalType {
 
 
      public void evalNext(MalType toEval, MalEnvironment newEnv) {
-          action = EVAL;
+          action = Action.EVAL;
           this.newEnv = newEnv;
           this.toEval = toEval;
      }
 
      public void catchNext(MalType toEval, MalEnvironment newEnv,
                            MalType exceptionBody, MalSymbol exceptionSym, MalEnvironment exceptionEnv) {
-          action = EVAL_WITH_EXC;
+          action = Action.EVAL_WITH_EXC;
           this.newEnv = newEnv;
           this.toEval = toEval;
           this.exceptionBody = exceptionBody;
@@ -34,7 +33,7 @@ public abstract class MalType {
      }
 
      public void executeNext(MalCallable toExecute, MalEnvironment newEnv, MalList args) {
-          action = EXEC;
+          action = Action.EXEC;
           toEval = toExecute;
           this.newEnv = newEnv;
           this.args = args;
@@ -44,9 +43,9 @@ public abstract class MalType {
           try {
                MalType result = evalType(environment, this);
                while (true) {
-                    int a = action;
-                    action = 0; // reset action for next iteration
-                    switch (a) {
+                    Action tmp = action;
+                    action = Action.RETURN; // reset action for next iteration
+                    switch (tmp) {
                          case EVAL ->
                                  result = toEval.evalType(newEnv, this);
                          case EXEC ->
@@ -63,7 +62,7 @@ public abstract class MalType {
                          }
                          default -> {
                               if (result == null)
-                                   System.out.println("desaster olloolololol "+action);
+                                   System.out.println("disaster olloolololol "+action);
                               return result;
                          }
                     }
@@ -73,11 +72,7 @@ public abstract class MalType {
           }
      }
 
-     public String rawString() {
+     public String prettyPrint() {
           return toString();
-     }
-
-     public Object value() {
-          return this;
      }
 }

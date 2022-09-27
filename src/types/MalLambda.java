@@ -36,10 +36,8 @@ public class MalLambda extends MalCallable {
                 if ((i + 1) >= args.size())
                     throw new MalException(new MalString(this + " expected " + argumentSymbols.size() + " argument(s), not " + (args.size() - 1)));
                 e.set(argumentSymbols.get(i), args.get(i + 1));
-              //  System.out.println("lambda added "+argumentSymbols.get(i)+" ("+args.get(i + 1)+") to env");
             }
         }
-       // System.out.println("Lambda call '"+body);
         caller.evalNext(body, e);
         return null;
     }

@@ -4,9 +4,10 @@ import environment.MalEnvironment;
 import exceptions.MalException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MalVector extends MalType implements MalContainer {
-
+    protected char openChar = '[', closeChar = ']';
     private ArrayList<MalType> list;
     public MalVector() {
         list = new ArrayList<>();
@@ -24,10 +25,11 @@ public class MalVector extends MalType implements MalContainer {
         return list.isEmpty();
     }
 
-    public void add(MalType t) {
-        if (t == null)
-            System.out.println("someone put null D:");
-        list.add(t);
+    public MalType[] subArray(int from, int to) {
+        return list.subList(from, to).toArray(new MalType[0]);
+    }
+    public void add(MalType... t) {
+        Collections.addAll(list, t);
     }
 
     public void addAll(MalVector v) {
@@ -60,13 +62,25 @@ public class MalVector extends MalType implements MalContainer {
 
     public String toString() {
         StringBuilder str = new StringBuilder();
-        str.append('[');
+        str.append(openChar);
         for (int i = 0; i < size(); i++) {
             str.append(list.get(i).toString());
             if (i < size() - 1)
                 str.append(" ");
         }
-        str.append(']');
+        str.append(closeChar);
+        return str.toString();
+    }
+
+    public String prettyPrint() {
+        StringBuilder str = new StringBuilder();
+        str.append(openChar);
+        for (int i = 0; i < size(); i++) {
+            str.append(list.get(i).prettyPrint());
+            if (i < size() - 1)
+                str.append(" ");
+        }
+        str.append(closeChar);
         return str.toString();
     }
 

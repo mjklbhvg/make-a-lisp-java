@@ -28,7 +28,7 @@ public class MalEnvironment implements Cloneable {
         return outerEnv.getRoot();
     }
 
-    public void set(String key, MalType value) throws MalException {
+    public void set(String key, MalType value) {
         store.put(key, value);
     }
 
@@ -77,10 +77,10 @@ public class MalEnvironment implements Cloneable {
         base.store.put(">", Conditional.greater());
         base.store.put(">=", Conditional.greaterEq());
 
-        base.store.put("prn", Util.print());
-        base.store.put("println", Util.printRaw());
-        base.store.put("pr-str", Util.string());
-        base.store.put("str", Util.stringRaw());
+        base.store.put("prn", Util.prettyPrint());
+        base.store.put("println", Util.println());
+        base.store.put("pr-str", Util.prettyString());
+        base.store.put("str", Util.string());
         base.store.put("list", Util.list());
         base.store.put("count", Util.count());
         base.store.put("read-string", Util.readString());

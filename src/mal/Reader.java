@@ -25,29 +25,23 @@ public class Reader {
         cursor = 0;
         Matcher m = MAL_TOKEN_PATTERN.matcher(input.strip());
         tokens = new ArrayList<>();
-        while (m.find())
-            tokens.add(m.group(2));
-
-        // remove empty tokens
-        tokens.remove("");
-
-        // remove comments
-        for (int i = 0; i < tokens.size(); i++) {
-            if (tokens.get(i).startsWith(";")) {
-                tokens.remove(i);
-                i--;
-            }
+        while (m.find()) {
+            // remove comments and empty tokens
+            if (!m.group(2).startsWith(";")
+                    && !m.group(2).isEmpty())
+                tokens.add(m.group(2));
         }
     }
 
     public String next() {
         if (!hasNext())
             return null;
-        cursor++;
-        return tokens.get(cursor - 1);
+        return tokens.get(cursor++);
     }
 
     public String peek() {
+        if (!hasNext())
+            return null;
         return tokens.get(cursor);
     }
 

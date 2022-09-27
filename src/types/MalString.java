@@ -65,12 +65,8 @@ public class MalString extends MalType {
         return str.toString();
     }
 
-    public String toString() {
+    public String prettyPrint() {
         return "„" + escape(value, true) + "“";
     }
-
-    @Override
-    public String rawString() {
-        return  value;
-    }
+    public String toString() {return value;}
 }

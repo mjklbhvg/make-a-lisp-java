@@ -4,13 +4,13 @@ import environment.MalEnvironment;
 
 public class MalNumber extends MalType {
 
-    private double value;
+    private long value;
 
-    public MalNumber(double value) {
+    public MalNumber(long value) {
         this.value = value;
     }
 
-    public Object value() {return  value;}
+    public long value() {return  value;}
 
     public boolean equals(Object o) {
         if (o instanceof MalNumber num)
@@ -19,10 +19,7 @@ public class MalNumber extends MalType {
     }
 
     public String toString() {
-        String str = Double.toString(value);
-        if (str.endsWith(".0")) // FIXME: LOL
-            return str.substring(0, str.length() - 2);
-        return str;
+        return Long.toString(value);
     }
 
     @Override

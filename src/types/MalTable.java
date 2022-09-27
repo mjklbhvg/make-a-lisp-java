@@ -9,40 +9,41 @@ import java.util.HashMap;
 
 public class MalTable extends MalType implements MalContainer {
 
-    private MalType cachedKey;
+    private MalString cachedKey;
 
-    private HashMap<Object, MalType> keyToValue;
-    private HashMap<Object, MalType> keyToKey;
+    private HashMap<String, MalType> store;
+    private HashMap<String, MalString> keys;
 
     public MalTable() {
-        keyToKey = new HashMap<>();
-        keyToValue = new HashMap<>();
+        store = new HashMap<>();
+        keys = new HashMap<>();
         cachedKey = null;
     }
 
     public boolean equals(Object o) {
         if (!(o instanceof MalTable t))
             return false;
-        return t.keyToValue.equals(keyToValue);
+        return t.store.equals(store);
     }
 
-    public MalType get(MalType key) {
-        return keyToValue.get(key.value());
+    public MalType get(MalString key) {
+        return store.get(key.value());
     }
 
-    public void put(MalType key, MalType value) {
-        keyToValue.put(key.value(), value);
-        keyToKey.put(key.value(), key);
+    public void put(MalString key, MalType value) {
+        store.put(key.value(), value);
+        keys.put(key.value(), key);
     }
 
-    public String toString() {
+    public String prettyPrint() {
         StringBuilder str = new StringBuilder();
         str.append("{");
-        for (Object key : keyToKey.keySet()) {
+        for (String key : store.keySet()) {
             str.append("\n\t");
-            str.append(keyToKey.get(key).toString().replaceAll("\n", "\n\t"));
+            str.append(keys.get(key).prettyPrint());
             str.append(" -> ");
-            str.append(keyToValue.get(key).toString().replaceAll("\n", "\n\t\t"));
+            // If the pretty printed value is multiple lines long, indent all of them
+            str.append(store.get(key).prettyPrint().replaceAll("\n", "\n\t\t"));
             str.append(",");
         }
         str.append("\n}");
@@ -50,13 +51,13 @@ public class MalTable extends MalType implements MalContainer {
     }
 
     @Override
-    public String rawString() {
+    public String toString() {
         StringBuilder str = new StringBuilder();
         str.append('{');
-        for (Object key : keyToKey.keySet()) {
-            str.append(keyToKey.get(key).rawString());
+        for (String key : store.keySet()) {
+            str.append(keys.get(key));
             str.append(' ');
-            str.append(keyToValue.get(key).rawString());
+            str.append(store.get(key));
             str.append(' ');
         }
         if (str.length() > 1)
@@ -65,31 +66,34 @@ public class MalTable extends MalType implements MalContainer {
         return str.toString();
     }
     @Override
-    public void store(MalType data) {
+    public void store(MalType data) throws MalParserException {
         if (cachedKey == null) {
-                cachedKey = data;
+            if (!(data instanceof MalString str))
+                throw new MalParserException("hash-map keys have to be either a string or a keyword");
+            cachedKey = str;
         } else {
-            keyToKey.put(cachedKey.value(), cachedKey);
-            keyToValue.put(cachedKey.value(), data);
+            store.put(cachedKey.value(), data);
+            keys.put(cachedKey.value(), cachedKey);
             cachedKey = null;
         }
     }
 
-    public Collection<MalType> getKeys(){
-        return keyToKey.values();
+    public Collection<MalString> getKeys(){
+        return keys.values();
     }
 
     public Collection<MalType> getValues() {
-        return keyToValue.values();
+        return store.values();
     }
 
-    public boolean containsKey(MalType key) {
-        return keyToKey.containsKey(key.value());
+    public boolean containsKey(MalString key) {
+        return keys.containsValue(key);
     }
 
     public void addAll(MalTable t) {
-        keyToKey.putAll(t.keyToKey);
-        keyToValue.putAll(t.keyToValue);
+        for (MalString str : t.keys.values()) {
+            put(str, t.get(str));
+        }
     }
 
     @Override
@@ -102,8 +106,8 @@ public class MalTable extends MalType implements MalContainer {
     @Override
     public MalType evalType(MalEnvironment environment, MalType caller) throws MalException {
         MalTable evaluatedTable = new MalTable();
-        for (MalType key : keyToKey.values())
-            evaluatedTable.put(key, get(key).eval(environment));
+        for (MalString key : keys.values())
+            evaluatedTable.put(key, store.get(key.value()).eval(environment));
         return evaluatedTable;
     }
 }

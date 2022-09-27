@@ -4,31 +4,34 @@ import environment.MalEnvironment;
 import exceptions.MalException;
 import exceptions.MalParserException;
 import types.MalList;
-import types.MalType;
 
 import java.io.*;
 
 public class Repl {
 
     private BufferedReader reader;
-
     private MalEnvironment replEnv;
-    private String prompt;
+    private int iteration = 1;
+    private String username;
+
+    private enum Status {OK, SKIP, EXIT}
 
     public Repl() {
         reader = new BufferedReader(
                 new InputStreamReader(System.in)
         );
         replEnv = MalEnvironment.getBaseEnvironment();
-        try {
-            replEnv.set("*ARGV*", new MalList());
-        } catch (MalException e) {
-            throw new RuntimeException(e);
-        }
-        prompt = "\033[1m" +System.getProperty("user.name") + "> \033[m";
+        replEnv.set("*ARGV*", MalList.EMPTY);
+        username = System.getProperty("user.name");
     }
 
-    public void exit() {
+    public void start() {
+        System.out.println("Mal[Java]");
+        Status s;
+        while ((s = rep()) != Status.EXIT) {
+            if (s == Status.OK)
+                iteration++;
+        }
         try {
             reader.close();
         } catch (IOException e) {
@@ -36,8 +39,8 @@ public class Repl {
         }
     }
 
-    public boolean rep() {
-        System.out.print(prompt);
+    public Status rep() {
+        System.out.print("\033[35;1m["+iteration+"] " + username + "> \033[m");
         String line;
         try {
             line = reader.readLine();
@@ -45,21 +48,18 @@ public class Repl {
             throw new RuntimeException(e);
         }
         if (line == null)
-            return false;
-        Reader tokenizer = new Reader(line);
+            return Status.EXIT;
 
-        // If there is no input or just a comment (removed by the Reader),
-        // we can just continue to avoid printing an empty result prompt at
-        // the repl
+        Reader tokenizer = new Reader(line);
         if (tokenizer.getTokens().size() == 0)
-            return true;
+            return Status.SKIP;
 
         MalList ast;
         try {
             ast = new Parser(tokenizer).getAST();
         } catch (MalParserException e) {
             System.out.println("" + e);
-            return true;
+            return Status.SKIP;
         }
 
         MalEnvironment backupEnvironment;
@@ -70,14 +70,16 @@ public class Repl {
         }
 
         try {
-            MalType result = ast.eval(replEnv);
-            System.out.println("=> " + result.toString());
+            String result = ast.eval(replEnv).prettyPrint();
+            // Strip the parens of the initial "mainAST" list
+            System.out.println("=> " + result.substring(1, result.length() - 1));
         } catch (MalException e) {
             System.out.println("Uncaught Exception: "+e.getValue());
             replEnv = backupEnvironment;
             System.out.println("Restored environment (⌐■_■)");
+            return Status.SKIP;
         }
-        return true;
+        return Status.OK;
     }
 
 }

@@ -49,7 +49,7 @@ public class Predicate {
         return new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (args.get(1) instanceof MalBool bool && (boolean) bool.value())
+                if (args.get(1) instanceof MalBool bool && bool.value())
                     return new MalBool(true);
                 return new MalBool(false);
             }
@@ -126,7 +126,7 @@ public class Predicate {
         return new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (args.get(1) instanceof MalString)
+                if (args.get(1) instanceof MalString && !(args.get(1) instanceof MalKeyword))
                     return new MalBool(true);
                 return new MalBool(false);
             }
@@ -159,7 +159,7 @@ public class Predicate {
         return new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (((MalTable) args.get(1)).containsKey(args.get(2)))
+                if (((MalTable) args.get(1)).containsKey((MalString) args.get(2)))
                     return new MalBool(true);
                 return new MalBool(false);
             }

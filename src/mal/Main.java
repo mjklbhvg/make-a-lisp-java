@@ -3,10 +3,7 @@ package mal;
 import environment.MalEnvironment;
 import exceptions.MalException;
 import exceptions.MalParserException;
-import types.MalKeyword;
-import types.MalList;
-import types.MalString;
-import types.MalType;
+import types.*;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -16,10 +13,7 @@ public class Main {
     public static void main(String[] args) {
 
         if (args.length == 0) {
-            Repl repl = new Repl();
-            System.out.println("Mal[Java]");
-            while (repl.rep()) ;
-            repl.exit();
+            new Repl().start();
             return;
         }
 
@@ -27,20 +21,16 @@ public class Main {
         MalList ast;
         try {
              ast = new Parser(new Reader(Path.of(filename))).getAST();
-        } catch (MalParserException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (MalParserException | IOException e) {
             throw new RuntimeException(e);
         }
+
         MalList arguments = new MalList();
         for (int i = 1; i < args.length; i++)
             arguments.add(new MalString(args[i]));
         MalEnvironment env = MalEnvironment.getBaseEnvironment();
-        try {
-            env.set("*ARGV*", arguments);
-        } catch (MalException e) {
-            throw new RuntimeException(e);
-        }
+        env.set("*ARGV*", arguments);
+
         try {
             ast.eval(env);
         } catch (MalException e) {

@@ -1,10 +1,11 @@
 package types;
 
 import environment.MalEnvironment;
-import mal.Keywords;
 
 public class MalBool extends MalType {
 
+    public static MalBool TRUE = new MalBool(true),
+                          FALSE = new MalBool(false);
     private boolean value;
 
     public MalBool(boolean value) {
@@ -16,7 +17,7 @@ public class MalBool extends MalType {
         return this;
     }
 
-    public Object value() {return value;}
+    public boolean value() {return value;}
 
     public boolean equals(Object o) {
         if (o instanceof MalBool malbool)
@@ -26,7 +27,7 @@ public class MalBool extends MalType {
 
     public String toString() {
         if (value)
-            return Keywords.TRUE;
-        return Keywords.FALSE;
+            return "true";
+        return "false";
     }
 }

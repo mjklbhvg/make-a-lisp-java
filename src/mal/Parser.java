@@ -57,25 +57,24 @@ public class Parser {
         // MalNumber
         //noinspection CatchMayIgnoreException
         try {
-            return new MalNumber(Double.parseDouble(tok));
+            return new MalNumber(Long.parseLong(tok));
         } catch (NumberFormatException e){}
 
         // Expand Reader Macros
         if (readerMacros.containsKey(tok)) {
             MalList expanded = new MalList();
-            expanded.add(new MalSymbol(readerMacros.get(tok)));
-            expanded.add(readForm());
+            expanded.add(new MalSymbol(readerMacros.get(tok)), readForm());
             return expanded;
         }
 
         // MalNil
-        if (tok.equals(Keywords.NIL))
+        if (tok.equals("nil"))
             return MalNil.NIL;
         // MalBool
-        if (tok.equals(Keywords.TRUE))
-            return new MalBool(true);
-        if (tok.equals(Keywords.FALSE))
-            return new MalBool(false);
+        if (tok.equals("true"))
+            return MalBool.TRUE;
+        if (tok.equals("false"))
+            return MalBool.FALSE;
         // MalKeyword
         if (tok.startsWith(":")) {
             if (tok.length() < 2)
@@ -88,7 +87,6 @@ public class Parser {
                 throw new MalParserException("unbalanced string");
             return new MalString(MalString.unescape(tok));
         }
-
         // MalSymbol
         return new MalSymbol(tok);
     }

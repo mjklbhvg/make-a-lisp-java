@@ -12,7 +12,7 @@ public class Conditional {
                 MalType result = args.get(1).eval(environment);
                 boolean conditionTrue = !(result instanceof MalNil);
                 if (conditionTrue && result instanceof MalBool resBool)
-                    conditionTrue = (boolean) resBool.value();
+                    conditionTrue = resBool.value();
 
                 MalType chosen = MalNil.NIL;
 
@@ -42,9 +42,7 @@ public class Conditional {
         return new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (args.get(1).equals(args.get(2)))
-                    return new MalBool(true);
-                return new MalBool(false);
+                return new MalBool(args.get(1).equals(args.get(2)));
             }
         };
     }
@@ -53,7 +51,7 @@ public class Conditional {
         return new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                return new MalBool((double)(args.get(1)).value() > (double) (args.get(2)).value());
+                return new MalBool(((MalNumber) args.get(1)).value() > ((MalNumber) args.get(2)).value());
             }
         };
     }
@@ -62,7 +60,7 @@ public class Conditional {
         return new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                return new MalBool((double) (args.get(1)).value() >= (double) (args.get(2)).value());
+                return new MalBool(((MalNumber) args.get(1)).value() >= ((MalNumber)args.get(2)).value());
             }
         };
     }
@@ -71,7 +69,7 @@ public class Conditional {
         return new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                return new MalBool((double) (args.get(1)).value() < (double) (args.get(2)).value());
+                return new MalBool(((MalNumber) args.get(1)).value() < ((MalNumber) args.get(2)).value());
             }
         };
     }
@@ -80,7 +78,7 @@ public class Conditional {
         return new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                return new MalBool((double) (args.get(1)).value() <= (double) (args.get(2)).value());
+                return new MalBool(((MalNumber) args.get(1)).value() <= ((MalNumber) args.get(2)).value());
             }
         };
     }

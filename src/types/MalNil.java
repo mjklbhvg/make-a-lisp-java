@@ -1,7 +1,6 @@
 package types;
 
 import environment.MalEnvironment;
-import mal.Keywords;
 
 public class MalNil extends MalType {
 
@@ -12,14 +11,14 @@ public class MalNil extends MalType {
     }
 
     public String toString() {
-        return Keywords.NIL;
+        return "nil";
     }
 
     public boolean equals(Object o) {
         return o instanceof MalNil;
     }
 
-    public Object value() {
+    public MalNil value() {
         return NIL;
     }
 }
