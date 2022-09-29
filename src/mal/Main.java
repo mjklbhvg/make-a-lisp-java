@@ -14,7 +14,7 @@ public class Main {
 
         if (args.length == 0) {
             new Repl().start();
-            return;
+            System.exit(0);
         }
 
         String filename = args[0];

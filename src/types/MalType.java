@@ -6,13 +6,13 @@ import exceptions.MalException;
 public abstract class MalType {
      public abstract MalType evalType(MalEnvironment environment, MalType caller) throws MalException;
 
-     private enum Action {EVAL, EXEC, EVAL_WITH_EXC, RETURN}
+     private enum Action {EVAL, EXEC, RETURN}
 
      private Action action = Action.RETURN;
 
-     protected MalEnvironment newEnv, exceptionEnv;
-     private MalSymbol exceptionSymbol;
-     protected MalType toEval, exceptionBody;
+     private MalEnvironment newEnv;
+     private MalType toEval;
+
      private MalList args;
 
 
@@ -20,16 +20,6 @@ public abstract class MalType {
           action = Action.EVAL;
           this.newEnv = newEnv;
           this.toEval = toEval;
-     }
-
-     public void catchNext(MalType toEval, MalEnvironment newEnv,
-                           MalType exceptionBody, MalSymbol exceptionSym, MalEnvironment exceptionEnv) {
-          action = Action.EVAL_WITH_EXC;
-          this.newEnv = newEnv;
-          this.toEval = toEval;
-          this.exceptionBody = exceptionBody;
-          this.exceptionSymbol = exceptionSym;
-          this.exceptionEnv = exceptionEnv;
      }
 
      public void executeNext(MalCallable toExecute, MalEnvironment newEnv, MalList args) {
@@ -50,16 +40,6 @@ public abstract class MalType {
                                  result = toEval.evalType(newEnv, this);
                          case EXEC ->
                                  result = ((MalCallable) toEval).execute(args, newEnv, this);
-                         case EVAL_WITH_EXC -> {
-                              try {
-                                   // probably bad
-                                   result = toEval.eval(newEnv);
-                              } catch (MalException me) {
-                                   MalEnvironment catchEnv = new MalEnvironment(exceptionEnv);
-                                   catchEnv.set(exceptionSymbol.value(), me.getValue());
-                                   result = exceptionBody.evalType(catchEnv, this);
-                              }
-                         }
                          default -> {
                               if (result == null)
                                    System.out.println("disaster olloolololol "+action);

@@ -41,6 +41,9 @@ public class MalVector extends MalType implements MalContainer {
             throw new MalException(new MalString("Index " + i + " out of bounds for length "+list.size()+"."));
         return list.get(i);
     }
+    public void clear() {
+        list.clear();
+    }
 
     public boolean equals(Object o) {
         if (!(o instanceof MalVector vec))

@@ -5,7 +5,6 @@ import exceptions.MalException;
 
 
 public class MalList extends MalVector {
-    public static final MalList EMPTY = new MalList();
     private boolean mainAST = false;
 
     public MalList() {
@@ -22,7 +21,6 @@ public class MalList extends MalVector {
         if (size() == 0)
             return this;
 
-
         // This is needed to e.g. make a 'let*' symbol evaluate itself
         // to the let* special
         MalList evaluatedList = new MalList();
@@ -38,7 +36,9 @@ public class MalList extends MalVector {
                 caller.evalNext(expanded, environment);
                 return null;
             }
-            evaluatedList = expandedList;
+            evaluatedList.clear();
+            evaluatedList.addAll(expandedList);
+
             if (evaluatedList.size() == 0)
                 return evaluatedList;
             evaluatedList.set(0, evaluatedList.get(0).eval(environment));
@@ -50,7 +50,7 @@ public class MalList extends MalVector {
         }
 
         for (int i = 1; i < evaluatedList.size(); i++)
-            evaluatedList.set(i, get(i).eval(environment));
+            evaluatedList.set(i, evaluatedList.get(i).eval(environment));
 
         if (mainAST)
             return evaluatedList;

@@ -21,7 +21,7 @@ public class Repl {
                 new InputStreamReader(System.in)
         );
         replEnv = MalEnvironment.getBaseEnvironment();
-        replEnv.set("*ARGV*", MalList.EMPTY);
+        replEnv.set("*ARGV*", new MalList());
         username = System.getProperty("user.name");
     }
 

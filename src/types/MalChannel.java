@@ -20,7 +20,7 @@ public class MalChannel extends MalType {
         try {
             MalType t = fifo.take();
             if (t instanceof MalAtom atm)
-                return new MalAtom(atm.dereference());
+                return new MalAtom(atm.getReference());
             return t;
         } catch (InterruptedException e) {
             return MalNil.NIL;

@@ -5,17 +5,14 @@ import exceptions.MalException;
 import types.*;
 
 public class Quote {
-    public static MalSpecial quote() {
-        return new MalSpecial() {
+    public static MalSpecial quote = new MalSpecial() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 return args.get(1);
             }
         };
-    }
 
-    public static MalSpecial quasiquote() {
-      return new MalSpecial() {
+    public static MalSpecial quasiquote = new MalSpecial() {
           @Override
           public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
               MalType result = qq_internal(args.get(1));
@@ -23,18 +20,20 @@ public class Quote {
               return null;
           }
       };
-    }
+
+    public static MalSpecial quasiquoteExpand = new MalSpecial() {
+            @Override
+            public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
+                return qq_internal(args.get(1));
+            }
+        };
 
     private static MalType qq_internal(MalType ast) throws MalException {
         if (ast instanceof MalVector list) {
             boolean isList = list instanceof MalList;
 
-            if (list.isEmpty()) {
-                if (isList)
+            if (list.isEmpty() && isList)
                     return new MalList();
-                else
-                    return new MalVector();
-            }
 
             if (isList
                     && list.get(0) instanceof MalSymbol sym

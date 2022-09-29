@@ -27,9 +27,7 @@ public class MalLambda extends MalCallable {
                     throw new MalException(new MalString("Expected exactly one symbol name after &"));
                 String name = argumentSymbols.get(i + 1);
                MalList argumentList = new MalList();
-               for (i += 1; i < args.size(); i++) {
-                   argumentList.add(args.get(i));
-               }
+               argumentList.add(args.subArray(i + 1, args.size()));
                e.set(name, argumentList);
                break;
             } else {
@@ -40,5 +38,9 @@ public class MalLambda extends MalCallable {
         }
         caller.evalNext(body, e);
         return null;
+    }
+
+    public String prettyPrint() {
+        return "(λ <"+argumentSymbols+" "+body.prettyPrint()+")";
     }
 }

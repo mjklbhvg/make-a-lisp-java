@@ -15,7 +15,7 @@ public class MalAtom extends MalType {
         return this;
     }
 
-    public MalType dereference() {
+    public MalType getReference() {
         return value;
     }
 

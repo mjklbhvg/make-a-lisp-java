@@ -16,29 +16,31 @@ public class MalMacro extends MalType {
         MalType executor = new MalType() {
             @Override
             public MalType evalType(MalEnvironment environment, MalType caller) throws MalException {
-                return lambda.execute(args, environment, this);
+                return lambda.execute(args, null, this);
             }
         };
-
-        MalType result = executor.eval(environment);
-        while (isMacroCall(result, environment)) {
-            result = ((MalMacro) ((MalList) result).get(0)).expand((MalList) result, environment);
+        MalType result = executor.eval(null);
+        MalMacro nextMacro;
+        while ((nextMacro = isMacroCall(result, environment)) != null) {
+            result = nextMacro.expand((MalList) result, environment);
         }
        return result;
     }
 
-    public static boolean isMacroCall(MalType t, MalEnvironment env) {
+    public static MalMacro isMacroCall(MalType t, MalEnvironment env) {
         if (!(t instanceof MalList list))
-            return false;
+            return null;
         if (list.isEmpty())
-            return false;
+            return null;
 
         try {
             if (!(list.get(0) instanceof MalSymbol sym))
-                return false;
-            return (sym.eval(env) instanceof MalMacro);
+                return null;
+            if (sym.eval(env) instanceof MalMacro macro)
+                return macro;
+            return null;
         } catch (MalException e) {
-            return false;
+            return null;
         }
     }
 

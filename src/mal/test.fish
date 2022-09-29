@@ -10,7 +10,7 @@ rm /tmp/fifo
 mkfifo /tmp/fifo
 
 fish -c '../java-again/run stepA_mal.mal < /tmp/fifo' &
-# fish -c 'java mal/Main < /tmp/fifo' &
+#fish -c 'java mal/Main < /tmp/fifo' &
 
 sleep 999999 > /tmp/fifo &
 echo Starting
@@ -22,8 +22,6 @@ for line in $lines
 		continue
 	end
 
-	set line (string replace ../tests $HOME/maltests $line)
-	
 	if string match -r '^;.*$' $line > /dev/null
 		printf "\033[31m%s\033[m\n" $line
 	else

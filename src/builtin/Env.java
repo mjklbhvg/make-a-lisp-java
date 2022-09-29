@@ -5,8 +5,7 @@ import exceptions.MalException;
 import types.*;
 
 public class Env {
-   public static MalSpecial addEnvironment() {
-        return new MalSpecial() {
+   public static MalSpecial addEnvironment = new MalSpecial() {
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 MalVector bindings = (MalVector) args.get(1);
 
@@ -23,10 +22,8 @@ public class Env {
                 return null;
             }
         };
-    }
 
-    public static MalSpecial modifyEnvironment() {
-        return new MalSpecial() {
+    public static MalSpecial modifyEnvironment = new MalSpecial() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 MalType value = args.get(2).eval(environment);
@@ -34,10 +31,8 @@ public class Env {
                 return value;
             }
         };
-    }
 
-    public static MalSpecial defineMacro() {
-       return new MalSpecial() {
+    public static MalSpecial defineMacro = new MalSpecial() {
            @Override
            public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                MalType value = args.get(2).eval(environment);
@@ -48,5 +43,4 @@ public class Env {
                return macro;
            }
        };
-    }
 }

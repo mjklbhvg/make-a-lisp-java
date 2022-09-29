@@ -7,8 +7,7 @@ import types.*;
 import java.util.ArrayList;
 
 public class Function {
-    public static MalSpecial lambda() {
-        return new MalSpecial() {
+    public static MalSpecial lambda = new MalSpecial() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 MalVector symbolList = (MalVector) args.get(1);
@@ -22,29 +21,23 @@ public class Function {
                 return new MalLambda(arguments, args.get(2), environment);
             }
         };
-    }
 
-    public static MalCallable eval() {
-        return new MalCallable() {
+    public static MalCallable eval = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 caller.evalNext(args.get(1), environment.getRoot());
                 return null;
             }
         };
-    }
 
-    public static MalSpecial macroexpand() {
-        return new MalSpecial() {
+    public static MalSpecial macroexpand = new MalSpecial() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (!MalMacro.isMacroCall(args.get(1), environment))
+                MalMacro m = MalMacro.isMacroCall(args.get(1), environment);
+                if (m == null)
                     throw new MalException(new MalString("macroexpand expects a macro call"));
-                MalList macroCall = (MalList) args.get(1);
-                macroCall.set(0, macroCall.get(0).eval(environment));
-                return ((MalMacro) macroCall.get(0)).expand(macroCall, environment);
+                return m.expand((MalList) args.get(1), environment);
 
             }
         };
-    }
 }

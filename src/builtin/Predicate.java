@@ -5,164 +5,117 @@ import exceptions.MalException;
 import types.*;
 
 public class Predicate {
-    public static MalCallable isAtom() {
-        return new MalCallable() {
+    public static MalCallable isAtom = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 return new MalBool(args.get(1) instanceof MalAtom);
             }
         };
-    }
 
-    public static MalCallable isList() {
-        return new MalCallable() {
+    public static MalCallable isList = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 return new MalBool(args.get(1) instanceof MalList);
             }
         };
-    }
 
-    public static MalCallable isEmpty() {
-        return new MalCallable() {
+    public static MalCallable isEmpty = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 if (args.get(1) instanceof MalNil)
-                    return new MalBool(true);
+                    return MalBool.TRUE;
                 return new MalBool(((MalVector) args.get(1)).isEmpty());
             }
         };
-    }
 
-    public static MalCallable isNil() {
-        return new MalCallable() {
+    public static MalCallable isNil = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (args.get(1) instanceof MalNil)
-                    return new MalBool(true);
-                return new MalBool(false);
+                return new MalBool(args.get(1) instanceof MalNil);
             }
         };
-    }
 
-    public static MalCallable isTrue() {
-        return new MalCallable() {
+    public static MalCallable isTrue = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (args.get(1) instanceof MalBool bool && bool.value())
-                    return new MalBool(true);
-                return new MalBool(false);
+                return new MalBool(args.get(1) instanceof MalBool bool && bool.value());
             }
         };
-    }
 
-    public static MalCallable isFalse() {
-        return new MalCallable() {
+    public static MalCallable isFalse = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (args.get(1) instanceof MalBool bool && !(boolean)bool.value())
-                    return new MalBool(true);
-                return new MalBool(false);
+                return new MalBool(args.get(1) instanceof MalBool bool && !(boolean)bool.value());
             }
         };
-    }
 
-    public static MalCallable isSymbol() {
-        return new MalCallable() {
+    public static MalCallable isSymbol = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (args.get(1) instanceof MalSymbol)
-                    return new MalBool(true);
-                return new MalBool(false);
+                return new MalBool(args.get(1) instanceof MalSymbol);
             }
         };
-    }
 
-    public static MalCallable isKeyword() {
-        return new MalCallable() {
+    public static MalCallable isKeyword = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (args.get(1) instanceof MalKeyword)
-                    return new MalBool(true);
-                return new MalBool(false);
+                return new MalBool(args.get(1) instanceof MalKeyword);
             }
         };
-    }
 
-    public static MalCallable isMap() {
-        return new MalCallable() {
+    public static MalCallable isMap = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (args.get(1) instanceof MalTable)
-                    return new MalBool(true);
-                return new MalBool(false);
+                return new MalBool(args.get(1) instanceof MalTable);
             }
         };
-    }
 
-    public static MalCallable isSequential() {
-        return new MalCallable() {
+    public static MalCallable isSequential = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (args.get(1) instanceof MalVector)
-                    return new MalBool(true);
-                return new MalBool(false);
+                return new MalBool(args.get(1) instanceof MalVector);
             }
         };
-    }
 
-    public static MalCallable isVector() {
-        return new MalCallable() {
+    public static MalCallable isVector = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (args.get(1) instanceof MalVector && !(args.get(1) instanceof MalList))
-                    return new MalBool(true);
-                return new MalBool(false);
+                return new MalBool(args.get(1) instanceof MalVector && !(args.get(1) instanceof MalList));
             }
         };
-    }
 
-    public static MalCallable isString() {
-        return new MalCallable() {
+    public static MalCallable isString = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (args.get(1) instanceof MalString && !(args.get(1) instanceof MalKeyword))
-                    return new MalBool(true);
-                return new MalBool(false);
+                return new MalBool(args.get(1) instanceof MalString && !(args.get(1) instanceof MalKeyword));
             }
         };
-    }
 
-    public static MalCallable isNumber() {
-        return new MalCallable() {
+    public static MalCallable isNumber = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (args.get(1) instanceof MalNumber)
-                    return new MalBool(true);
-                return new MalBool(false);
+                return new MalBool(args.get(1) instanceof MalNumber);
             }
         };
-    }
 
-    public static MalCallable isFunction() {
-        return new MalCallable() {
+    public static MalCallable isFunction = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (args.get(1) instanceof MalCallable)
-                    return new MalBool(true);
-                return new MalBool(false);
+                return new MalBool(args.get(1) instanceof MalCallable);
             }
         };
-    }
 
-    public static MalCallable contains() {
-        return new MalCallable() {
+    public static MalCallable isMacro = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (((MalTable) args.get(1)).containsKey((MalString) args.get(2)))
-                    return new MalBool(true);
-                return new MalBool(false);
+                return new MalBool(args.get(1) instanceof MalMacro);
             }
         };
-    }
+
+    public static MalCallable contains = new MalCallable() {
+            @Override
+            public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
+                return new MalBool(((MalTable) args.get(1)).containsKey((MalString) args.get(2)));
+            }
+        };
 }

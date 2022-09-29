@@ -13,8 +13,7 @@ import java.nio.file.Path;
 import java.util.HashSet;
 
 public class Util {
-    public static MalCallable count() {
-        return new MalCallable() {
+    public static MalCallable count = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 if (args.get(1) instanceof MalNil)
@@ -22,10 +21,8 @@ public class Util {
                 return new MalNumber(((MalVector) args.get(1)).size());
             }
         };
-    }
 
-    public static MalCallable list() {
-        return new MalCallable() {
+    public static MalCallable list = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 MalList l = new MalList();
@@ -34,45 +31,36 @@ public class Util {
                 return l;
             }
         };
-    }
 
-    public static MalCallable atom() {
-        return new MalCallable() {
+    public static MalCallable atom = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 return new MalAtom(args.get(1));
             }
         };
-    }
 
-    public static MalCallable deref() {
-        return new MalCallable() {
+    public static MalCallable deref = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                return ((MalAtom) args.get(1)).dereference();
+                return ((MalAtom) args.get(1)).getReference();
             }
         };
-    }
 
-    public static MalCallable resetAtom() {
-        return new MalCallable() {
+    public static MalCallable resetAtom = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 ((MalAtom) args.get(1)).setReference(args.get(2));
                 return args.get(2);
             }
         };
-    }
 
-    public static MalCallable swap() {
-        return new MalCallable() {
+    public static MalCallable swap = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 MalList fnargs = new MalList();
                 fnargs.add(args.get(0));
-                fnargs.add(((MalAtom) args.get(1)).dereference());
-                for (int i = 3; i < args.size(); i++)
-                    fnargs.add(args.get(i));
+                fnargs.add(((MalAtom) args.get(1)).getReference());
+                fnargs.add(args.subArray(3, args.size()));
                 MalType executor = new MalType() {
                     @Override
                     public MalType evalType(MalEnvironment environment, MalType caller) throws MalException {
@@ -81,13 +69,11 @@ public class Util {
                 };
 
                 ((MalAtom) args.get(1)).setReference(executor.eval(null));
-                return ((MalAtom) args.get(1)).dereference();
+                return ((MalAtom) args.get(1)).getReference();
             }
         };
-    }
 
-    public static MalCallable prettyPrint() {
-        return new MalCallable() {
+    public static MalCallable prettyPrint = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 for (int i = 1; i < args.size(); i++) {
@@ -99,23 +85,21 @@ public class Util {
                 return MalNil.NIL;
             }
         };
-    }
 
-    public static MalCallable println() {
-        return new MalCallable() {
+    public static MalCallable println = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 for (int i = 1; i < args.size(); i++) {
                     System.out.print(args.get(i).toString());
+                    if (i != args.size() - 1)
+                        System.out.print(' ');
                 }
                 System.out.println();
                 return MalNil.NIL;
             }
         };
-    }
 
-    public static MalCallable prettyString() {
-        return new MalCallable() {
+    public static MalCallable prettyString = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 StringBuilder str = new StringBuilder();
@@ -127,10 +111,8 @@ public class Util {
                 return new MalString(str.toString());
             }
         };
-    }
 
-    public static MalCallable string() {
-        return new MalCallable() {
+    public static MalCallable string = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 StringBuilder str = new StringBuilder();
@@ -140,10 +122,8 @@ public class Util {
                 return new MalString(str.toString());
             }
         };
-    }
 
-    public static MalCallable readString() {
-        return new MalCallable() {
+    public static MalCallable readString = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 Reader r = new Reader(((MalString) args.get(1)).value());
@@ -158,10 +138,8 @@ public class Util {
                 }
             }
         };
-    }
 
-    public static MalCallable slurp() {
-        return new MalCallable() {
+    public static MalCallable slurp = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 try {
@@ -171,23 +149,18 @@ public class Util {
                 }
             }
         };
-    }
 
-    public static MalCallable cons() {
-        return new MalCallable() {
+    public static MalCallable cons = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 MalList newList = new MalList();
                 newList.add(args.get(1));
-                for (int i = 0; i < ((MalVector) args.get(2)).size(); i++)
-                    newList.add(((MalVector) args.get(2)).get(i));
+                newList.addAll((MalVector) args.get(2));
                 return newList;
             }
         };
-    }
 
-    public static MalCallable concat() {
-        return new MalCallable() {
+    public static MalCallable concat = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 MalList newList = new MalList();
@@ -196,24 +169,21 @@ public class Util {
                 return newList;
             }
         };
-    }
 
-    public static MalCallable vec() {
-        return new MalCallable() {
+    public static MalCallable vec = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (args.get(1) instanceof MalList list) {
+                if (args.get(1) instanceof MalList l) {
                     MalVector vec = new MalVector();
-                    vec.addAll(list);
+                    vec.addAll(l);
                     return vec;
                 }
-                return args.get(1);
+                // Cast to check type
+                return ((MalVector) args.get(1));
             }
         };
-    }
 
-    public static MalCallable nth() {
-        return new MalCallable() {
+    public static MalCallable nth = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 int index = (int) ((MalNumber) args.get(2)).value();
@@ -223,10 +193,8 @@ public class Util {
                 return ((MalVector) args.get(1)).get(index);
             }
         };
-    }
 
-    public static MalCallable first() {
-        return new MalCallable() {
+    public static MalCallable first = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 if (args.get(1) instanceof MalNil || ((MalVector) args.get(1)).size() == 0)
@@ -234,43 +202,34 @@ public class Util {
                 return ((MalVector) args.get(1)).get(0);
             }
         };
-    }
 
-    public static MalCallable rest() {
-        return new MalCallable() {
+    public static MalCallable rest = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                MalList newList = new MalList();
-                if (args.get(1) instanceof MalNil)
-                    return newList;
+                if (args.get(1) instanceof MalNil || ((MalVector) args.get(1)).isEmpty())
+                    return new MalList();
 
-                for (int i = 1; i < ((MalVector) args.get(1)).size(); i++)
-                    newList.add(((MalVector) args.get(1)).get(i));
+                MalList newList = new MalList();
+                newList.add(((MalVector) args.get(1)).subArray(1, ((MalVector) args.get(1)).size()));
                 return newList;
             }
         };
-    }
 
-    public static MalCallable apply() {
-        return new MalCallable() {
+    public static MalCallable apply = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 if (!(args.get(args.size() - 1) instanceof MalVector))
                     throw new MalException(new MalString("Last argument to apply must be a vector or list"));
 
                 MalList argumentList = new MalList();
-                for (int i = 1; i < args.size() - 1; i++)
-                    argumentList.add(args.get(i));
+                argumentList.add(args.subArray(1, args.size() - 1));
                 argumentList.addAll((MalVector) args.get(args.size() - 1));
-              //  System.out.println("apply: new call with args: "+argumentList);
-
-                return ((MalCallable) args.get(1)).execute(argumentList, environment, caller);
+                caller.executeNext((MalCallable) args.get(1), environment, argumentList);
+                return null;
             }
         };
-    }
 
-    public static MalCallable map() {
-        return new MalCallable() {
+    public static MalCallable map = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 MalList results = new MalList();
@@ -287,23 +246,20 @@ public class Util {
                     };
                     results.add(executor.eval(environment));
                 }
-                // (get (assoc (assoc {"a" 1 } "b" 2) "c" 3) "a")
                 return results;
             }
         };
-    }
 
-    public static MalCallable symbol() {
-        return new MalCallable() {
+    public static MalCallable symbol = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
+                if (args.get(1) instanceof MalSymbol sym)
+                    return sym;
                 return new MalSymbol(((MalString) args.get(1)).value());
             }
         };
-    }
 
-    public static MalCallable keyword() {
-        return new MalCallable() {
+    public static MalCallable keyword = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 if (args.get(1) instanceof MalKeyword kw)
@@ -311,22 +267,17 @@ public class Util {
                 return new MalKeyword(((MalString) args.get(1)).value());
             }
         };
-    }
 
-    public static MalCallable vector() {
-        return new MalCallable() {
+    public static MalCallable vector = new MalCallable() {
             @Override
-            public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
+            public MalType execute(MalList args, MalEnvironment environment, MalType caller) {
                 MalVector v = new MalVector();
-                for (int i = 1; i < args.size(); i++)
-                    v.add(args.get(i));
+                v.add(args.subArray(1, args.size()));
                 return v;
             }
         };
-    }
 
-    public static MalCallable hashMap() {
-        return new MalCallable() {
+    public static MalCallable hashMap = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 MalTable t = new MalTable();
@@ -335,10 +286,8 @@ public class Util {
                 return t;
             }
         };
-    }
 
-    public static MalCallable assoc() {
-        return new MalCallable() {
+    public static MalCallable assoc = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 if (args.size() % 2 != 0)
@@ -350,10 +299,8 @@ public class Util {
                 return t;
             }
         };
-    }
 
-    public static MalCallable dissoc() {
-        return new MalCallable() {
+    public static MalCallable dissoc = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 HashSet<String> toRemove = new HashSet<>();
@@ -368,10 +315,8 @@ public class Util {
                 return newTable;
             }
         };
-    }
 
-    public static MalCallable get() {
-        return new MalCallable() {
+    public static MalCallable get = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 if (args.get(1) instanceof MalNil)
@@ -382,10 +327,8 @@ public class Util {
                 return value;
             }
         };
-    }
 
-    public static MalCallable keys() {
-        return new MalCallable() {
+    public static MalCallable keys = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 MalList l = new MalList();
@@ -394,10 +337,8 @@ public class Util {
                 return l;
             }
         };
-    }
 
-    public static MalCallable vals() {
-        return new MalCallable() {
+    public static MalCallable vals = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 MalList l = new MalList();
@@ -406,10 +347,8 @@ public class Util {
                 return l;
             }
         };
-    }
 
-    public static MalCallable readline() {
-        return new MalCallable() {
+    public static MalCallable readline = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 if (args.size() > 1)
@@ -424,37 +363,29 @@ public class Util {
                 }
             }
         };
-    }
 
-    public static MalCallable timeMillis() {
-        return new MalCallable() {
+    public static MalCallable timeMillis = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) {
                 return new MalNumber(System.currentTimeMillis());
             }
         };
-    }
 
-    public static MalCallable meta() {
-        return new MalCallable() {
+    public static MalCallable meta = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 throw new MalException(new MalString("not implemented"));
             }
         };
-    }
 
-    public static MalCallable withMeta() {
-        return new MalCallable() {
+    public static MalCallable withMeta = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 throw new MalException(new MalString("not implemented"));
             }
         };
-    }
 
-    public static MalCallable seq() {
-        return new MalCallable() {
+    public static MalCallable seq = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 if (args.get(1) instanceof MalNil)
@@ -467,24 +398,28 @@ public class Util {
                         l.add(new MalString("" + c));
                     return l;
                 }
-                if (args.get(1) instanceof MalList)
-                    return args.get(1);
+                if (args.get(1) instanceof MalList l) {
+                    if (l.isEmpty())
+                        return MalNil.NIL;
+                    return l;
+                }
+                MalVector v = (MalVector) args.get(1);
+                if (v.size() == 0)
+                    return MalNil.NIL;
                 MalList l = new MalList();
-                l.add(((MalVector) args.get(1)).subArray(0, ((MalVector) args.get(1)).size()));
+                l.add(v.subArray(0, ((MalVector) args.get(1)).size()));
                 return l;
             }
         };
-    }
 
-    public static MalCallable conj() {
-        return new MalCallable() {
+    public static MalCallable conj = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
-                if (args.get(1) instanceof MalList list) {
+                if (args.get(1) instanceof MalList l) {
                     MalList newList = new MalList();
                     for (int i = args.size() - 1; i > 1; i--)
                         newList.add(args.get(i));
-                    newList.add(list.subArray(0, list.size()));
+                    newList.add(l.subArray(0, l.size()));
                     return newList;
                 }
                 MalVector vector = (MalVector) args.get(1);
@@ -494,5 +429,4 @@ public class Util {
                 return newVector;
             }
         };
-    }
 }

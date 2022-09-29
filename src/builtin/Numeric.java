@@ -5,8 +5,7 @@ import exceptions.MalException;
 import types.*;
 
 public class Numeric {
-    public static MalCallable add() {
-        return new MalCallable() {
+    public static MalCallable add = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 long result = 0;
@@ -15,10 +14,8 @@ public class Numeric {
                 return new MalNumber(result);
             }
         };
-    }
 
-    public static MalCallable subtract() {
-        return new MalCallable() {
+    public static MalCallable subtract = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 long result = ((MalNumber) args.get(1)).value();
@@ -32,10 +29,8 @@ public class Numeric {
                 return new MalNumber(result);
             }
         };
-    }
 
-    public static MalCallable multiply() {
-        return new MalCallable() {
+    public static MalCallable multiply = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 long result = 1;
@@ -44,10 +39,8 @@ public class Numeric {
                 return new MalNumber(result);
             }
         };
-    }
 
-    public static MalCallable divide() {
-        return new MalCallable() {
+    public static MalCallable divide = new MalCallable() {
             @Override
             public MalType execute(MalList args, MalEnvironment environment, MalType caller) throws MalException {
                 long result = ((MalNumber) args.get(1)).value();
@@ -67,5 +60,4 @@ public class Numeric {
                 return new MalNumber(result);
             }
         };
-    }
 }
